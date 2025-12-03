@@ -1,3 +1,14 @@
+// Example usage in a test:
+// import { test, expect } from '@playwright/test';
+// import { HomePage } from './HomePage';
+//
+// test('Home page example', async ({ page }) => {
+//   const home = new HomePage(page);
+//   await home.goto();
+//   await home.getStarted();
+//   const visible = await home.isInstallationHeadingVisible();
+//   expect(visible).toBeTruthy();
+// });
 import { Page } from '@playwright/test';
 
 export class HomePage {
