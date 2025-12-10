@@ -97,7 +97,7 @@ ExcelParser.parseExcelDataDriven(excelPath)
 
 📊 TEST DATA
 └── tests/testData/
-    ├── TC001_*.xlsx ................. Your test cases here
+    ├── TC001_*.xlsx .................. Your test cases here
     ├── TC002_*.xlsx
     └── TC003_*.xlsx
 ```
