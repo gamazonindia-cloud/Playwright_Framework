@@ -20,7 +20,8 @@ test.describe('Single Test Case - Data Layer', () => {
       });
       console.log();
     });
-     console.log(`\n\nMethod 2: Get first record`);
+    
+    console.log(`\n\nMethod 2: Get first record`);
     const firstRecord = enabledDatasets[0];
     console.log(`  Dataset: ${firstRecord.Dataset}`);
     console.log(`  UserName: ${firstRecord.UserName}`);
@@ -28,5 +29,4 @@ test.describe('Single Test Case - Data Layer', () => {
     console.log(`  Password: ${firstRecord.Password}`);
     expect(enabledDatasets.length).toBeGreaterThan(0);
   });
-
 });

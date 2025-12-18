@@ -1,0 +1,54 @@
+{
+  "testName": "Login Test",
+  "description": "Generated from requirements:       User navigates to login page",
+  "requirementSource": "\n      User navigates to login page\n      User enters \"testuser\" in the username field\n      User enters \"password123\" in the password field\n      User clicks the login button\n      User verifies \"Welcome\" message is displayed\n    ",
+  "generatedAt": "2025-12-18T03:04:30.987Z",
+  "steps": [
+    {
+      "step": 1,
+      "keyword": "navigate",
+      "description": "navigate action:       User navigates to login page...",
+      "confidence": 0.7,
+      "source": "      User navigates to login page"
+    },
+    {
+      "step": 2,
+      "keyword": "type",
+      "locatorName": "login.username",
+      "description": "type action:       User enters \"testuser\" in the username field...",
+      "confidence": 0.9,
+      "source": "      User enters \"testuser\" in the username field",
+      "value": "testuser"
+    },
+    {
+      "step": 3,
+      "keyword": "type",
+      "locatorName": "login.password",
+      "description": "type action:       User enters \"password123\" in the password fi...",
+      "confidence": 0.9,
+      "source": "      User enters \"password123\" in the password field",
+      "value": "password123"
+    },
+    {
+      "step": 4,
+      "keyword": "click",
+      "description": "click action:       User clicks the login button...",
+      "confidence": 0.7,
+      "source": "      User clicks the login button"
+    },
+    {
+      "step": 5,
+      "keyword": "assertVisible",
+      "description": "assertVisible action:       User verifies \"Welcome\" message is displayed...",
+      "confidence": 0.7,
+      "source": "      User verifies \"Welcome\" message is displayed"
+    }
+  ],
+  "validationStatus": "pending",
+  "notes": "AI-generated test case. Review and approve before execution.",
+  "validationIssues": [
+    "Step 1: Missing required parameter \"url\" for \"navigate\"",
+    "Step 4: Missing required parameter \"locatorName\" for \"click\"",
+    "Step 5: Missing required parameter \"locatorName\" for \"assertVisible\""
+  ]
+}

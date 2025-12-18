@@ -1,0 +1,10 @@
+{
+  "timestamp": "2025-12-18T03:04:31.455Z",
+  "summary": {
+    "totalAttempts": 0,
+    "healed": 0,
+    "failed": 0,
+    "avgScore": 0
+  },
+  "reports": []
+}
