@@ -23,7 +23,7 @@ async function waitForAppReady(page: Page) {
 }
 
 // Utility: Highlight element for debugging
-async function highlight(locator: Locator) {
+export async function highlight(locator: Locator) {
   try {
     await locator.evaluate((el) => {
       el.style.border = "3px solid red";

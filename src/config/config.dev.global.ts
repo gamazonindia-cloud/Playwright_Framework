@@ -1,3 +1,3 @@
 module.exports = {
-  baseURL: 'https://emag-test.fa.em8.oraclecloud.com/' // Replace with actual Oracle app URL
+  baseURL: 'https://ekaw-dev8.fa.us2.oraclecloud.com/' // Replace with actual Oracle app URL
 };
