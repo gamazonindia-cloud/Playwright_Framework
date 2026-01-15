@@ -9,35 +9,12 @@ test.only("Add an Asset", async ({ page }) => {
 
   // Fetch only enabled datasets
   const enabledDatasets = ExcelDataValidator.getEnabledDatasets(excelPath);
-  const headers = ExcelDataValidator.getHeaders(excelPath);
-
-  console.log(`\n✅ Total Enabled Datasets: ${enabledDatasets.length}\n`);
-  console.log(`\n\nMethod 2: Get first record`);
   const firstRecord = enabledDatasets[0];
-  console.log(`  Dataset: ${firstRecord.Dataset}`);
-  console.log(`  UserName: ${firstRecord.UserName}`);
-  console.log(`  Password: ${firstRecord.Password}`);
-  console.log(`  Book: ${firstRecord.Book}`);
-  console.log(`  AssetType: ${firstRecord.AssetType}`);
-  console.log(`  Category: ${firstRecord.Category}`);
   const commonFunctions = new CommonFunctions(page);
   const fixedAssetFunctions = new FixedAssetResuableFunctions(page);
-  await commonFunctions.login(
-    firstRecord.UserName.toString(),
-    firstRecord.Password
-  );
+  await commonFunctions.login(firstRecord);
   await commonFunctions.navigateToMenuItem("Fixed Assets", "Assets");
   await commonFunctions.selectTastkFromTasksPanel("Transactions", "Add Asset");
-  await fixedAssetFunctions.addAsset(
-    firstRecord.Book,
-    firstRecord.AssetType,
-    firstRecord.Category,
-    firstRecord.Description,
-    firstRecord.Cost,
-    firstRecord.Unit,
-    firstRecord.ExpenseAccount,
-    firstRecord.Location
-  );
-
-
+  await fixedAssetFunctions.addAsset(firstRecord);
+  await fixedAssetFunctions.addAssetDescriptiveDetails(firstRecord);
 });

@@ -1,6 +1,7 @@
 import { Page } from "@playwright/test";
 
 import Keyword_Library, { highlight } from "../../keywords/FusionKeywords";
+import { DatasetRow } from "../../../utils/excelDataValidator";
 
 const config = require("./config.dev.global.js");
 
@@ -11,18 +12,18 @@ class CommonFunctions {
     this.page = page;
   }
 
-  async login(username: string, password: string) {
+  async login(record: DatasetRow) {
     Keyword_Library.SetPage(this.page);
     await Keyword_Library.OpenBrowser({ url: config.baseURL });
     await Keyword_Library.Web_TypeByText({
       label: "User ID",
-      value: username,
+      value: `${record.UserName}`,
       partial: false,
       index: 0,
     });
     await Keyword_Library.Web_TypeByText({
       label: "Password",
-      value: password,
+      value: `${record.Password}`,
       partial: false,
       index: 0,
     });
@@ -53,7 +54,7 @@ class CommonFunctions {
     Keyword_Library.SetPage(this.page);
     await this.page.locator("//img[@alt='Tasks']").click();
 
-    const taskLocatorXpath = `//div[//span[text()='${parantTask}']]//*[text()='${childTask}']`;
+    const taskLocatorXpath = `//div[//span[text()="${parantTask}"]]//*[text()="${childTask}"]`;
     console.log(`Task Locator Xpath: ${taskLocatorXpath}`);
     const taskLocator = this.page.locator(taskLocatorXpath);
     await taskLocator.waitFor({ state: "visible", timeout: 5000 });
