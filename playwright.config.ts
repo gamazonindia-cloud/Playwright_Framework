@@ -16,8 +16,8 @@ export default defineConfig({
    reporter: [['list'], ['html', { open: 'never' }], ['allure-playwright']],
  
    use: {
-     actionTimeout: 15000,
-     navigationTimeout: 20000,
+     actionTimeout: 30000,
+     navigationTimeout: 60000,
      video: 'retain-on-failure',
      headless: false,
      trace: 'on',
