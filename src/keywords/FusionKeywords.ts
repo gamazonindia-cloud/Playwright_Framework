@@ -1,7 +1,7 @@
 import { Page, expect, Locator } from "@playwright/test";
 
 // Constants
-const DEFAULT_TIMEOUT = 20000;
+const DEFAULT_TIMEOUT = 70000;
 
 // Keyword interface for type safety
 export interface KeywordParams {

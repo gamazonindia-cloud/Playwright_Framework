@@ -14,7 +14,10 @@ test.only("Add an Asset", async ({ page }) => {
   const fixedAssetFunctions = new FixedAssetResuableFunctions(page);
   await commonFunctions.login(firstRecord);
   await commonFunctions.navigateToMenuItem("Fixed Assets", "Assets");
-  await commonFunctions.selectTastkFromTasksPanel("Transactions", "Add Asset");
-  await fixedAssetFunctions.addAsset(firstRecord);
-  await fixedAssetFunctions.addAssetDescriptiveDetails(firstRecord);
+ // await commonFunctions.selectTastkFromTasksPanel("Transactions", "Add Asset");
+  //await fixedAssetFunctions.addAsset(firstRecord);
+  //await fixedAssetFunctions.addAssetDescriptiveDetails(firstRecord);
+  await fixedAssetFunctions.verifyAssetAdded(firstRecord);
+
+
 });

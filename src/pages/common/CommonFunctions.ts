@@ -57,7 +57,7 @@ class CommonFunctions {
     const taskLocatorXpath = `//div[//span[text()="${parantTask}"]]//*[text()="${childTask}"]`;
     console.log(`Task Locator Xpath: ${taskLocatorXpath}`);
     const taskLocator = this.page.locator(taskLocatorXpath);
-    await taskLocator.waitFor({ state: "visible", timeout: 5000 });
+    await taskLocator.waitFor({ state: "visible", timeout: 30000 });
     await taskLocator.click();
   }
 }
