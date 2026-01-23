@@ -35,12 +35,16 @@ export class FixedAssetResuableFunctions {
       await this.page.getByLabel("Location").fill(record.Location);
       await this.page.getByLabel("Location").press("Enter");
     }
-    await this.page.waitForTimeout(5000); // Wait for 1 second to ensure data is processed
-     if (record.Cost) {
-      await this.page.getByLabel("Cost").fill(record.Cost.toString());
-      await this.page.getByLabel("Cost").press("Tab");
-    }
+    //await this.page.locator("//div[text()='Add Asset']").click();
+    await this.page.waitForTimeout(500); // Wait for 1 second to ensure data is processed
+    //  if (record.Cost) {
+    //   await this.page.getByLabel("Cost").fill(record.Cost.toString());
+    //   await this.page.getByLabel("Cost").press("Tab");
+    // }
       await this.page.locator("//button[text()='Ne']").click();
+      // Generic page load wait - works for any page transition
+      await this.page.waitForLoadState('load');
+      await this.page.waitForTimeout(10000);
   }
 
   async addAssetDescriptiveDetails(record: DatasetRow)
@@ -48,8 +52,13 @@ export class FixedAssetResuableFunctions {
     if (record.InServiceDate) {
       await this.page.getByLabel("In Service Date").fill(record.InServiceDate);
     }
+      if (record.Cost) {
+      await this.page.getByLabel("Cost").fill(record.Cost.toString());
+      await this.page.getByLabel("Cost").press("Tab");
+    }
     if (record.TagNumber) {
-      await this.page.getByLabel("Tag Number").fill(record.TagNumber);
+      await this.page.getByLabel("Tag Number").waitFor({ state: 'visible' });
+      await this.page.getByLabel("Tag Number").fill(record.TagNumber.toString());
     }
     if (record.InvestmentLaw) {
       await this.page.getByLabel("Investment Law").fill(record.InvestmentLaw);
@@ -97,12 +106,16 @@ export class FixedAssetResuableFunctions {
     const bookXpath = `//label[text()="Book"]`;
     console.log(`Book Locator Xpath: ${bookXpath}`);
   //  await this.page.locator(bookXpath).nth(1).selectOption(record.Book);
-  await this.page.waitForTimeout(3000);
+  await this.page.getByLabel("Employee Name").nth(0).waitFor({ state: 'visible' });
   await this.page.getByLabel("Book").nth(0).click();
     await this.page.getByLabel("Book").nth(0).selectOption(record.Book);
+    await this.page.waitForLoadState('domcontentloaded');
     console.log(`Selecting Book: ${record.Book}`);
-    await this.page.getByLabel("Tag Number").fill(record.TagNumber.toString); // Replace with dynamic asset number if available
+    if (record.TagNumber) {
+      await this.page.getByLabel("Tag Number").fill(record.TagNumber.toString());
+    }
     await this.page.locator("//button[text()='Search']").click();
+    await this.page.waitForLoadState('domcontentloaded');
     const assetExists = await this.page.isVisible(`text=${record.TagNumber}`);
     if (!assetExists) {
       throw new Error("Asset was not added successfully");
