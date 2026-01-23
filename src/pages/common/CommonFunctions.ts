@@ -1,7 +1,8 @@
 import { Page } from "@playwright/test";
-
+import { format as DateFormat} from "date-fns";
 import Keyword_Library, { highlight } from "../../keywords/FusionKeywords";
 import { DatasetRow } from "../../../utils/excelDataValidator";
+import { format } from "path/win32";
 
 const config = require("./config.dev.global.js");
 
@@ -13,8 +14,9 @@ class CommonFunctions {
   }
 
   async login(record: DatasetRow) {
+   
     Keyword_Library.SetPage(this.page);
-    await Keyword_Library.OpenBrowser({ url: config.baseURL });
+    await Keyword_Library.OpenBrowser({ url: config.cuURL });
     await Keyword_Library.Web_TypeByText({
       label: "User ID",
       value: `${record.UserName}`,
@@ -50,6 +52,17 @@ class CommonFunctions {
     await menu1Locator.click();
   }
 
+  async navigateToItemFromHomePage(menuItem1: string, menuItem2: string) {
+    Keyword_Library.SetPage(this.page);
+
+    await this.page.getByLabel("Home").click();
+    await this.page.locator("//a[text()='"+menuItem1+"']").click();
+    await this.page.waitForTimeout(2000);
+    await this.page.locator("(//a[text()='Show More'])[3]").click();
+    await this.page.waitForTimeout(2000);
+    await this.page.locator("(//a[text()='"+menuItem2+"'])[2]").click();
+  }
+
   async selectTastkFromTasksPanel(parantTask: string, childTask: string) {
     Keyword_Library.SetPage(this.page);
     await this.page.locator("//img[@alt='Tasks']").click();
@@ -59,6 +72,13 @@ class CommonFunctions {
     const taskLocator = this.page.locator(taskLocatorXpath);
     await taskLocator.waitFor({ state: "visible", timeout: 30000 });
     await taskLocator.click();
+  }
+  
+  async getCurrentDate() {
+    const today = new Date();
+    const formattedDate = DateFormat(today, 'dd-MMM-yyyy');
+    console.log(formattedDate);
+
   }
 }
 
