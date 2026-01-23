@@ -1,0 +1,278 @@
+import { expect, Page } from "@playwright/test";
+import { DatasetRow } from "../../../../utils/excelDataValidator";
+import { CommonFunctions } from "../../common/CommonFunctions";
+
+      const FirstName = Math.floor(Math.random() * 100);
+      const FirstTest="Test";
+      const First_Name=FirstTest+"_"+FirstName;
+      const LastName = Math.floor(Math.random() * 100);
+      const LastTest="Test";
+      const Last_Name=LastTest+"_"+LastName;
+      const EmployeeName=First_Name+" "+Last_Name;
+      
+export class CoreHrResuableFunctions {
+  constructor(private page: Page) {}
+ 
+  
+  async hireEmployee_WhenAndWhy(record: DatasetRow) {
+    
+    if (record.HireDate) {
+      await this.page.getByLabel("When is the employee hire date?").fill(record.HireDate);
+    }
+    if (record.Action) {
+      await this.page.locator("(//label[text()='Action']/following::input[@placeholder='Select a value'])[1]").fill(record.Action);
+    }
+    if (record.LegalEmployer) {
+      await this.page.waitForTimeout(2000);
+      await this.page.locator("(//label[text()='Legal Employer']/following::input[@placeholder='Select a value'])[1]").type(record.LegalEmployer,{delay:200});
+      await this.page.locator("(//label[text()='Legal Employer']/following::input[@placeholder='Select a value'])[1]").press('Enter');   
+    }
+    if (record.ChangeReason) {
+      await this.page.locator("(//label[text()='Change Reason']/following::input[@placeholder='Select a value'])[1]").type(record.ChangeReason,{delay:200});
+      await this.page.locator("(//label[text()='Change Reason']/following::input[@placeholder='Select a value'])[1]").press('Enter');
+    }
+  }
+  async hireEmployee_ToBeVisibleContinue()
+   {
+    const Continue=await this.page.locator("//button[text()='Continue']").isVisible();
+    if (Continue==true) {
+      await expect(this.page.locator("//button[text()='Continue']")).toBeVisible();
+      await this.page.locator("//button[text()='Continue']").click();
+      await this.page.locator("//button[text()='Continue']").waitFor();
+      console.log("Clicked on Continue button");
+      await this.page.waitForLoadState("networkidle");
+      await this.page.waitForTimeout(3000);
+    }
+    else {
+      await expect(this.page.locator("//button[text()='Contin']")).toBeVisible();
+      await this.page.locator("//button[text()='Contin']").click();
+      await this.page.locator("//button[text()='Contin']").waitFor();
+      console.log("Clicked on Contin button");
+      await this.page.waitForLoadState("networkidle");
+    //   const op=await this.page.locator("//label[text()='Citizenship']").isVisible();
+    //   if(op)
+    //   {
+    //     console.log("Clicked on Issuing Country button");
+    //      await this.page.locator("//label[text()='Issuing Country']").waitFor();
+    //   } 
+     
+       await this.page.waitForTimeout(3000);
+    }
+  }
+  async hireEmployee_PersonalDetails(record: DatasetRow)
+   {
+    
+   
+      const randomInt = Math.floor(Math.random() * 100000000);
+      console.log("WWID is: " + randomInt);
+      await this.page.getByLabel("WWID").fill(randomInt.toString());
+    
+    if (record.FirstName) {
+      await this.page.getByLabel("First Name").fill(First_Name);
+    }
+    if (record.LastName) {
+      await this.page.locator("(//label[text()='Last Name']//following::input)[1]").fill(Last_Name);
+    }
+    if (record.Gender) {
+      await this.page.locator("(//label[text()='Gender']//following::a)[1]").click();
+      await this.page.locator("//li[text()='"+record.Gender+"']").click();
+    }
+    if (record.DateofBirth) {
+      await this.page.getByLabel("Date of Birth").fill(record.DateofBirth);
+    }
+    if (record.Country) {
+       await this.page.locator("(//label[text()='Country']//following::input[@placeholder='Select a value'])[1]").click();  
+      await this.page.keyboard.press('Control+A');
+      await this.page.keyboard.press('Delete');
+     
+      await this.page.locator("(//label[text()='Country']//following::input[@placeholder='Select a value'])[1]").type(record.Country,{delay:200});
+      await this.page.locator("(//label[text()='Country']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+      console.log("hireEmployee_PersonalDetails executed");
+    }
+  }
+    
+  async hireEmployee_CommunicationInfo(record: DatasetRow)
+  {
+    
+    // if (record.Type) {
+    //   await this.page.locator("(//label[text()='Type']//following::input)[1]").click();
+    //   await this.page.locator("//li[text()='"+record.Type+"']").click();
+    // }
+    // if(record.AreaCode){
+    //   await this.page.getByLabel("Area Code").fill(record.AreaCode);
+    // }
+    // if(record.Number){
+    //   await this.page.getByLabel("Number").fill(record.Number);
+    // }
+   console.log("hireEmployee_CommunicationInfo executed");
+  }
+  async hireEmployee_Addresses(record: DatasetRow)
+  {
+ 
+    if (record.Country) {
+      await this.page.locator("(//label[text()='Country']//following::input[@placeholder='Select a value'])[1]").type(record.Country,{delay:200});
+      await this.page.locator("(//label[text()='Country']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+    }
+    if (record.Type1) {
+      await this.page.locator("(//label[text()='Type']//following::input)[1]").click();
+      await this.page.locator("//li[text()='"+record.Type1+"']").click();
+    }
+    if (record.AddressLine1) {
+      const str = String(record.AddressLine1);
+      await this.page.getByLabel("Address Line 1").fill(str);
+    }
+    if (record.ZIPCode) {
+      const zip=String(record.ZIPCode);
+      await this.page.locator("(//label[text()='ZIP Code']//following::input[@placeholder='Select a value'])[1]").type(zip,{delay:200});
+      await this.page.waitForTimeout(3000);
+      await this.page.locator("(//span[text()='"+zip+"'])[1]").click();
+      await this.page.waitForTimeout(3000);
+    }
+    console.log("hireEmployee_Addresses executed");
+  }
+  async hireEmployee_LegislativeInfo(record: DatasetRow)
+  {
+   
+    if (record.MaritalStatus) {
+      await this.page.locator("(//label[text()='Marital Status']//following::input)[1]").click();
+      await this.page.locator("//li[text()='"+record.MaritalStatus+"']").click();
+    }
+    console.log("hireEmployee_LegislativeInfo executed");
+
+  }
+  async hireEmployee_CitizenshipInfo(record: DatasetRow)
+  {
+    console.log("hireEmployee_CitizenshipInfo executed");
+  }
+  async hireEmployee_VisasAndPermits(record: DatasetRow)
+  {
+    
+    // if (record.IssuingCountry) {
+    //   await this.page.locator("(//label[text()='Issuing Country']//following::input[@placeholder='Select a value'])[1]").type(record.IssuingCountry,{delay:200});
+      
+    //   await this.page.locator("(//label[text()='Issuing Country']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+      
+    // }
+    console.log("hireEmployee_VisasAndPermits executed");
+
+  }
+  
+  async hireEmployee_FamilyAndEmergencyContacts(record: DatasetRow)
+  {
+    console.log("hireEmployee_FamilyAndEmergencyContacts executed");
+  }
+  async hireEmployee_EmploymentDetails(record: DatasetRow)
+  {
+      await this.page.waitForTimeout(3000); 
+    if (record.AssignmentCountry) {
+      await this.page.locator("(//label[text()='Assignment Country']//following::input[@placeholder='Select a value'])[1]").type(record.AssignmentCountry,{delay:200});
+      await this.page.waitForTimeout(3000); 
+      await this.page.locator("(//label[text()='Assignment Country']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+    }
+    if (record.Job) {
+      await this.page.waitForTimeout(3000);
+      await this.page.locator("(//label[text()='Job']//following::input[@placeholder='Select a value'])[1]").type(record.Job,{delay:200});
+      await this.page.waitForTimeout(3000); 
+      await this.page.locator("(//label[text()='Job']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+    }
+    if (record.Grade) {
+      await this.page.waitForTimeout(3000);
+      await this.page.locator("(//label[text()='Grade']//following::input[@placeholder='Select a value'])[1]").type(record.Grade,{delay:200});
+      await this.page.waitForTimeout(3000); 
+      await this.page.locator("(//label[text()='Grade']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+    }
+    if (record.Location) {
+      await this.page.waitForTimeout(3000);
+      await this.page.locator("(//label[text()='Location']//following::input[@placeholder='Select a value'])[1]").type(record.Location,{delay:200});
+      await this.page.waitForTimeout(3000); 
+      await this.page.locator("(//label[text()='Location']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+    }
+    if (record.CumminsAssignmentStatus) {
+      await this.page.waitForTimeout(3000);
+      await this.page.locator("(//label[text()='Cummins Assignment Status']//following::input)[1]").type(record.CumminsAssignmentStatus,{delay:200});
+      await this.page.waitForTimeout(3000); 
+      await this.page.locator("(//label[text()='Cummins Assignment Status']//following::input)[1]").press('Enter');
+    }
+    console.log("hireEmployee_EmploymentDetails executed");
+  }
+
+  async hireEmployee_AssignManagers(record: DatasetRow)
+  {
+    await this.page.locator("(//span[text()='Add'])[1]").click();
+    if (record.Name) {
+      await this.page.waitForTimeout(3000);
+      await this.page.locator("(//label[text()='Name']//following::input[@placeholder='Select a value'])[1]").type(record.Name,{delay:200});
+      await this.page.waitForTimeout(3000); 
+      await this.page.locator("(//label[text()='Name']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+    }
+    if (record.Type2) {
+      await this.page.locator("(//label[text()='Type']//following::input)[1]").click();
+      await this.page.waitForTimeout(3000);
+      await this.page.locator("//li[text()='"+record.Type2+"']").click();
+    }
+  }
+  async hireEmployee_PayrollDetails(record: DatasetRow)
+  {
+    console.log("hireEmployee_PayrollDetails executed");
+  }
+  async hireEmployee_Salary(record: DatasetRow)
+  {
+    if (record.SalaryBasis) {
+      await this.page.waitForTimeout(3000);
+      await this.page.locator("(//label[text()='Salary Basis']//following::input[@placeholder='Select a value'])[1]").type(record.SalaryBasis,{delay:200});
+      await this.page.waitForTimeout(3000); 
+      await this.page.locator("(//label[text()='Salary Basis']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+    }
+    if (record.SalaryAmount) {
+      const Amount=String(record.SalaryAmount);
+      await this.page.locator("(//label[text()='Salary Amount']//following::input)[1]").type(Amount);
+    }
+    console.log("hireEmployee_Salary executed");
+  }
+  async hireEmployee_Submit()
+  {
+      await this.page.locator("//span[text()='Sub']").click();
+    await this.page.waitForTimeout(30000);
+    await this.page.waitForTimeout(30000);
+    await this.page.waitForTimeout(30000);
+    console.log("hireEmployee_Submit executed");
+
+      }
+  async hireEmployee_PersonManagement()
+  {
+      //await this.page.locator("//span[text()='Sub']").click();
+      await this.page.getByLabel("Name").fill(EmployeeName);
+      await this.page.locator("//button[text()='Search']").click();
+    console.log("hireEmployee_PersonManagement executed");
+  }
+  async hireEmployee_OpneEmployee()
+  {
+      await this.page.locator("//a[text()='"+EmployeeName+"']").click();
+      await this.page.waitForTimeout(5000);
+    console.log("hireEmployee_OpneEmployee executed");
+  }
+  async hireEmployee_ValidateEmployee()
+  {
+      const emp = await this.page.getByLabel("Hire").isVisible();
+      if (emp) {
+        console.log("Employee is visible");
+      } else {
+        console.log("Employee is not visible"); 
+      }
+    console.log("hireEmployee_OpneEmployee executed");
+  }
+  async hireEmployee_SearchTerminateEmployment()
+  {
+      await this.page.locator("//input[@placeholder='Search by Name, Local Title, Work Email, or WWID']").fill("Test_1 Test_41");
+      await this.page.waitForTimeout(2000);
+      await this.page.locator("//input[@placeholder='Search by Name, Local Title, Work Email, or WWID']").press('Enter');
+      
+  }
+  async hireEmployee_TerminateEmployment(record: DatasetRow)
+  {
+    console.log("hireEmployee_TerminateEmployment executed");
+      await this.page.locator("(//span[text()='Termination Notification Date']/following::input)[1]").fill(record.TerminationNotificationDate);
+      await this.page.locator("(//span[text()='Termination Date']/following::input)[1]").fill(record.TerminationDate);
+     
+  }
+}

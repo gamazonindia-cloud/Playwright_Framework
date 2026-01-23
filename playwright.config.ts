@@ -14,21 +14,34 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
  
    reporter: [['list'], ['html', { open: 'never' }], ['allure-playwright']],
- 
+  timeout: 120 * 1000,
    use: {
-     actionTimeout: 30000,
-     navigationTimeout: 60000,
      video: 'retain-on-failure',
-     headless: false,
+     headless: !true,
      trace: 'on',
+    launchOptions: {
+   // args: ['--start-maximized'],
+  },
+     
    },
+   
 
+   
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
+      use: { 
+        //...devices['Desktop Chrome'],//old code
+          viewport: null,//new added
+      launchOptions: {//new added
+         args: ['--start-maximized'],//new added
+        },
+      },
+    
 
+    },
   ],
+  
+  
 });
