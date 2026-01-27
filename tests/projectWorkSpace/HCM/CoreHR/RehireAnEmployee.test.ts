@@ -4,9 +4,9 @@ import * as path from "path";
 import { CommonFunctions } from "../../../../src/pages/common/CommonFunctions";
 import { FixedAssetResuableFunctions } from "../../../../src/pages/finance/FA/FixedAssetResuableFunctions";
 import { CoreHrResuableFunctions } from "../../../../src/pages/hcm/CoreHR/CoreHrResuableFunctions";
-test.only("Terminate an Employee", async ({ page }) => {
+test.only("Rehire an Employee", async ({ page }) => {
   test.setTimeout(1200000);
-  const excelPath = path.join(__dirname, "/TerminateAnEmployeeTestData.xlsx");
+  const excelPath = path.join(__dirname, "/RehireAnEmployeeTestData.xlsx");
 
   // Fetch only enabled datasets
   const enabledDatasets = ExcelDataValidator.getEnabledDatasets(excelPath);
