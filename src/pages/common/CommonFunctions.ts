@@ -58,11 +58,18 @@ class CommonFunctions {
     await this.page.getByLabel("Home").click();
     await this.page.locator("//a[text()='"+menuItem1+"']").click();
     await this.page.waitForTimeout(2000);
+    await this.page.locator("(//a[text()='"+menuItem2+"'])[1]").click();
+  }
+  async navigateToItemFromHomePageShowMore(menuItem1: string, menuItem2: string) {
+    Keyword_Library.SetPage(this.page);
+
+    await this.page.getByLabel("Home").click();
+    await this.page.locator("//a[text()='"+menuItem1+"']").click();
+    await this.page.waitForTimeout(2000);
     await this.page.locator("(//a[text()='Show More'])[3]").click();
     await this.page.waitForTimeout(2000);
     await this.page.locator("(//a[text()='"+menuItem2+"'])[2]").click();
   }
-
   async selectTastkFromTasksPanel(parantTask: string, childTask: string) {
     Keyword_Library.SetPage(this.page);
     await this.page.locator("//img[@alt='Tasks']").click();

@@ -8,7 +8,8 @@ import { CommonFunctions } from "../../common/CommonFunctions";
       const LastName = Math.floor(Math.random() * 100);
       const LastTest="Test";
       const Last_Name=LastTest+"_"+LastName;
-      const EmployeeName=First_Name+" "+Last_Name;
+      //const EmployeeName=First_Name+" "+Last_Name;
+      const EmployeeName="Test_1 Test_41";
       
 export class CoreHrResuableFunctions {
   constructor(private page: Page) {}
@@ -238,11 +239,16 @@ export class CoreHrResuableFunctions {
     console.log("hireEmployee_Submit executed");
 
       }
-  async hireEmployee_PersonManagement()
+  async hireEmployee_PersonManagement(record:DatasetRow)
   {
       //await this.page.locator("//span[text()='Sub']").click();
       await this.page.getByLabel("Name").fill(EmployeeName);
+      if(record.Include_terminated_work_relationships)
+      {
+        await this.page.locator("//label[text()='Include terminated work relationships']").click();
+      }
       await this.page.locator("//button[text()='Search']").click();
+      await this.page.waitForTimeout(2000);
     console.log("hireEmployee_PersonManagement executed");
   }
   async hireEmployee_OpneEmployee()
@@ -261,18 +267,50 @@ export class CoreHrResuableFunctions {
       }
     console.log("hireEmployee_OpneEmployee executed");
   }
-  async hireEmployee_SearchTerminateEmployment()
+  async SearchTerminateEmployment()
   {
       await this.page.locator("//input[@placeholder='Search by Name, Local Title, Work Email, or WWID']").fill("Test_1 Test_41");
       await this.page.waitForTimeout(2000);
       await this.page.locator("//input[@placeholder='Search by Name, Local Title, Work Email, or WWID']").press('Enter');
       
   }
-  async hireEmployee_TerminateEmployment(record: DatasetRow)
+  async TerminateEmployment(record: DatasetRow)
   {
     console.log("hireEmployee_TerminateEmployment executed");
       await this.page.locator("(//span[text()='Termination Notification Date']/following::input)[1]").fill(record.TerminationNotificationDate);
       await this.page.locator("(//span[text()='Termination Date']/following::input)[1]").fill(record.TerminationDate);
      
+  }
+  async RehireAction()
+  {
+      await this.page.locator("//img[@title='Actions']").click();
+      await this.page.locator("(//td[text()='Personal and Employment'])[2]").click();
+      await this.page.locator("(//td[text()='Create Work Relationship'])[2]").click();
+      await this.page.waitForTimeout(5000);
+  }
+  async Rehire_CreateWorkRelationship(record:DatasetRow)
+  {
+      await this.page.locator("(//label[text()='Action']/following::a)[1]").click();
+      await this.page.locator("//li[text()='"+record.Action+"']").click(record.Action);
+      await this.page.waitForTimeout(2000);
+      await this.page.locator("(//label[text()='Action Reason']/following::a)[1]").click();
+      await this.page.locator("//li[text()='"+record.ActionReason+"']").click();
+  }
+  async Rehire_Next()
+  {
+      await this.page.locator("//span[text()='Ne']").click();
+      await this.page.waitForTimeout(2000);
+  }
+  async Rehire_HomeAddress(record)
+  {
+    const AddressLine1=record.AddressLine1;
+    const strAddressLine1 = AddressLine1.toString();
+    const ZipCode=record.ZipCode;
+    const strZipCode = ZipCode.toString();
+      await this.page.getByLabel("Address Line 1").fill(strAddressLine1);
+      await this.page.getByLabel("ZIP Code").fill(strZipCode);
+      await this.page.getByLabel("City").fill(record.City);
+      await this.page.getByLabel("State").fill(record.State);
+      await this.page.getByLabel("County").fill(record.County);
   }
 }

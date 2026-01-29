@@ -12,16 +12,16 @@ test.only("Rehire an Employee", async ({ page }) => {
   const enabledDatasets = ExcelDataValidator.getEnabledDatasets(excelPath);
   const firstRecord = enabledDatasets[0];
   const commonFunctions = new CommonFunctions(page);
-  const fixedAssetFunctions = new FixedAssetResuableFunctions(page);
-  await commonFunctions.login(firstRecord);
-  const date=await commonFunctions.getCurrentDate();
-  await commonFunctions.navigateToItemFromHomePage("My Client Groups", "Terminate Employment");
   const hireEmployee_ReusableFunction=new CoreHrResuableFunctions(page);
   await page.setDefaultTimeout(120000);
-  await hireEmployee_ReusableFunction.hireEmployee_SearchTerminateEmployment();
-  await hireEmployee_ReusableFunction.hireEmployee_TerminateEmployment(firstRecord);
-  await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
-
+  await commonFunctions.login(firstRecord);
+  await commonFunctions.navigateToItemFromHomePage("My Client Groups", "Person Management");
+  await hireEmployee_ReusableFunction.hireEmployee_PersonManagement(firstRecord);
+  await hireEmployee_ReusableFunction.RehireAction();
+  await hireEmployee_ReusableFunction.Rehire_CreateWorkRelationship(firstRecord);
+  await hireEmployee_ReusableFunction.Rehire_Next();
+  await hireEmployee_ReusableFunction.Rehire_HomeAddress(firstRecord);
+  await hireEmployee_ReusableFunction.Rehire_Next();
 
 
 
