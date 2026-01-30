@@ -87,6 +87,23 @@ class CommonFunctions {
     console.log(formattedDate);
 
   }
+  async splitText(Text:string, Delimiter:string, Index:number) {
+    const TextArray = Text.split(Delimiter);
+    console.log("Split Text Array: ", TextArray[Index]);
+    return TextArray[Index];
+  }
+  async openFilePath(filePath:string) {
+        //** Path Example C:\\Document\\Form.pdf **//
+        const { exec } = require('child_process');
+        const Path = filePath;
+        exec(`start "" "${Path}"`, (err) => {
+        if (err) {
+          console.error('Error opening file:', err);
+        } else {
+          console.log('File opened successfully!');
+        }
+    });
+  }
 }
 
 export { CommonFunctions };

@@ -309,8 +309,10 @@ export class CoreHrResuableFunctions {
     const strZipCode = ZipCode.toString();
       await this.page.getByLabel("Address Line 1").fill(strAddressLine1);
       await this.page.getByLabel("ZIP Code").fill(strZipCode);
-      await this.page.getByLabel("City").fill(record.City);
-      await this.page.getByLabel("State").fill(record.State);
-      await this.page.getByLabel("County").fill(record.County);
+      await this.page.getByLabel("ZIP Code").press('Enter');
+      await this.page.waitForTimeout(5000);
+      // await this.page.getByLabel("City").fill(record.City);
+      // await this.page.getByLabel("State").fill(record.State);
+      // await this.page.getByLabel("County").fill(record.County);
   }
 }

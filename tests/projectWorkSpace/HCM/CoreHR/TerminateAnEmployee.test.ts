@@ -19,7 +19,7 @@ test("Terminate an Employee", async ({ page }) => {
   await hireEmployee_ReusableFunction.SearchTerminateEmployment();
   await hireEmployee_ReusableFunction.TerminateEmployment(firstRecord);
   await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
-
+  
 
 
 
