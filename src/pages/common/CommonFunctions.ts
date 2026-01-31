@@ -16,7 +16,7 @@ class CommonFunctions {
   async login(record: DatasetRow) {
    
     Keyword_Library.SetPage(this.page);
-    await Keyword_Library.OpenBrowser({ url: config.testURL });
+    await Keyword_Library.OpenBrowser({ url: config.baseURL });
     await Keyword_Library.Web_TypeByText({
       label: "User ID",
       value: `${record.UserName}`,

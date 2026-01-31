@@ -6,23 +6,24 @@ export class TestPageReusableFunctions {
   async test_Login(record: DatasetRow) {
 
     await this.page.goto('https://automationexercise.com/');
-    await this.page.locator("//a[text()=' Signup / Login']").click();
-    await this.page.locator("(//input[@placeholder='Email Address'])[1]").fill(record.UserName);
-    await this.page.locator("(//input[@placeholder='Password'])[1]").fill(record.Password);
-    await this.page.getByRole('button', { name: 'Login' }).click();
+    await this.page.getByText(" Signup / Login").click();
+    await this.page.getByPlaceholder("Email Address").first().fill(record.UserName);
+    await this.page.getByPlaceholder("Password").fill(record.Password);
+    await this.page.getByText("Login",{exact:true}).click();
 
   }
   async addItemIntoCart(record: DatasetRow) {
 
-    await this.page.locator("(//p[text()='"+record.ItemName+"'])[1]").hover();
+    const itemn=await this.page.getByText(record.ItemName).first();
+    await itemn.hover();
     await this.page.locator("(//p[text()='"+record.ItemName+"']/following::a[text()='Add to cart'])[1]").click();
-    await this.page.locator("//u[text()='View Cart']").click();
+    await this.page.getByText("View Cart").click();
     
   }
   async proceedToCheckout() {
 
-    await this.page.locator("//a[text()='Proceed To Checkout']").click();
-    await this.page.locator("//a[text()='Place Order']").click();
+    await this.page.getByText("Proceed To Checkout").click();
+    await this.page.getByText("Place Order").click();
     
   }
   async paymentDetails(record:DatasetRow) {
@@ -35,18 +36,16 @@ export class TestPageReusableFunctions {
     let Expiration = Expire.toString();
     let year = record.Year;
     let Year = year.toString();
-
-    await this.page.locator("(//label[text()='Name on Card']/following::input)[1]").fill(record.NameOnCard);
-    await this.page.locator("(//label[text()='Card Number']/following::input)[1]").fill(CardNumber);
-    await this.page.locator("(//label[text()='CVC']/following::input)[1]").fill(CVC);
-    await this.page.locator("(//label[text()='Expiration']/following::input)[1]").fill(Expiration);
-    await this.page.locator("(//label[text()='Expiration']/following::input)[2]").fill(Year);
-    await this.page.getByRole('button', { name: 'Pay and Confirm Order' }).click();
-    
+    await this.page.locator('input[name="name_on_card"]').fill(record.NameOnCard);
+    await this.page.locator('input[name="card_number"]').fill(CardNumber);
+    await this.page.getByRole('textbox', { name: 'ex.' }).fill(CVC);
+    await this.page.getByRole('textbox', { name: 'MM' }).fill(Expiration);
+    await this.page.getByRole('textbox', { name: 'YYYY' }).fill(Year);
+    await this.page.getByText("Pay and Confirm Order").click();
   }
   async validateOrder() {
 
-    const confirmation =await this.page.locator("//p[text()='Congratulations! Your order has been confirmed!']").isVisible();
+    const confirmation =await this.page.getByText("Congratulations! Your order has been confirmed").isVisible();
     if(confirmation){
       console.log("✅ Your order has been confirmed !!!");
     }
@@ -56,9 +55,8 @@ export class TestPageReusableFunctions {
   }
   async downloadInvoice() {
 
-    await this.page.locator("//a[text()='Download Invoice']").click();
+    await this.page.getByText("Download Invoice").click();
     await this.page.setDefaultTimeout(5000);
-
-    
+    console.log("✅ Invoice Downloaded!!!");
   }
 }
