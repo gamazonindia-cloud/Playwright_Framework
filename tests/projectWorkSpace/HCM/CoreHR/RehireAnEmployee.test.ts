@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 import { ExcelDataValidator } from "../../../../utils/excelDataValidator";
 import * as path from "path";
 import { CommonFunctions } from "../../../../src/pages/common/CommonFunctions";
-import { FixedAssetResuableFunctions } from "../../../../src/pages/finance/FA/FixedAssetResuableFunctions";
 import { CoreHrResuableFunctions } from "../../../../src/pages/hcm/CoreHR/CoreHrResuableFunctions";
 test("Rehire an Employee", async ({ page }) => {
   test.setTimeout(1200000);

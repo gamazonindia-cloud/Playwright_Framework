@@ -16,7 +16,7 @@ class CommonFunctions {
   async login(record: DatasetRow) {
    
     Keyword_Library.SetPage(this.page);
-    await Keyword_Library.OpenBrowser({ url: config.cuURL });
+    await Keyword_Library.OpenBrowser({ url: config.testURL });
     await Keyword_Library.Web_TypeByText({
       label: "User ID",
       value: `${record.UserName}`,
@@ -81,9 +81,10 @@ class CommonFunctions {
     await taskLocator.click();
   }
   
-  async getCurrentDate() {
+  async getCurrentDate(format:string) {
     const today = new Date();
-    const formattedDate = DateFormat(today, 'dd-MMM-yyyy');
+    //** Date Format example dd/MM/yyyy **//
+    const formattedDate = DateFormat(today, format);
     console.log(formattedDate);
 
   }

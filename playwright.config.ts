@@ -14,7 +14,7 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
  
    reporter: [['list'], ['html', { open: 'never' }], ['allure-playwright']],
-  timeout: 120 * 1000,
+  timeout: 90 * 1000,
    use: {
      video: 'retain-on-failure',
      headless: !true,
