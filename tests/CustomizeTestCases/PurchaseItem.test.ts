@@ -15,9 +15,11 @@ test.only("Testing", async ({ page }) => {
   await shoppingApp_ReusableFunction.addItemIntoCart(firstRecord);
   //Proceed to checkOut
   await shoppingApp_ReusableFunction.proceedToCheckout();
-  
+  //Payment card Details
   await shoppingApp_ReusableFunction.paymentDetails(firstRecord);
+  //Validate Order is confirm
   await shoppingApp_ReusableFunction.validateOrder();
+  //Download Invoice
   await shoppingApp_ReusableFunction.downloadInvoice();
 
 

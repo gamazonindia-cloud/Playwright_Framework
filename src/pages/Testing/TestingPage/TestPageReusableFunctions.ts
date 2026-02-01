@@ -13,17 +13,42 @@ export class TestPageReusableFunctions {
 
   }
   async addItemIntoCart(record: DatasetRow) {
-
-    const itemn=await this.page.getByText(record.ItemName).first();
-    await itemn.hover();
-    await this.page.locator("(//p[text()='"+record.ItemName+"']/following::a[text()='Add to cart'])[1]").click();
-    await this.page.getByText("View Cart").click();
     
+    const item1=await this.page.getByText(record.ItemName1).first();
+    await item1.hover();
+    await this.page.locator("(//p[text()='"+record.ItemName1+"']/following::a[text()='Add to cart'])[1]").click();
+    await this.page.waitForTimeout(2000);
+    const Continue=await this.page.getByText("Continue Shopping").click();
+    await this.page.waitForTimeout(2000);
+    const item2=await this.page.getByText(record.ItemName2).first();
+    await item2.hover();
+    await this.page.locator("(//p[text()='"+record.ItemName2+"']/following::a[text()='Add to cart'])[1]").click();
+    await this.page.waitForTimeout(2000);
+    await this.page.getByText("View Cart").click();
+    await this.page.locator('.cart_quantity_delete').first().click();
+    await this.page.reload();
+    await this.page.locator("//a[text()=' Home']").click();
+    await this.page.reload();
+    await this.page.locator("//a[text()=' Home']").click();
+    await this.page.reload();
+    await this.page.waitForTimeout(2000);
+    const item3=await this.page.getByText(record.ItemName3).first();
+    await item3.hover();
+    await this.page.locator("(//p[text()='"+record.ItemName3+"']/following::a[text()='Add to cart'])[1]").click();
+    await this.page.waitForTimeout(2000);
+    await this.page.getByText("View Cart").click();
   }
   async proceedToCheckout() {
 
     await this.page.getByText("Proceed To Checkout").click();
+    await this.page.reload();
     await this.page.getByText("Place Order").click();
+    await this.page.reload();
+    const placeorder=await this.page.getByText("Place Order").isVisible();
+    if(placeorder)
+    {
+      await this.page.getByText("Place Order").click();
+    }
     
   }
   async paymentDetails(record:DatasetRow) {
