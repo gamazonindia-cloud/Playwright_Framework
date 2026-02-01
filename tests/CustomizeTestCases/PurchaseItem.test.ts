@@ -9,9 +9,13 @@ test.only("Testing", async ({ page }) => {
   const enabledDatasets = ExcelDataValidator.getEnabledDatasets(excelPath);
   const firstRecord = enabledDatasets[0];
   const shoppingApp_ReusableFunction=new TestPageReusableFunctions(page);
+  //Login to shopping page
   await shoppingApp_ReusableFunction.test_Login(firstRecord);
+  //Add Item 
   await shoppingApp_ReusableFunction.addItemIntoCart(firstRecord);
+  //Proceed to checkOut
   await shoppingApp_ReusableFunction.proceedToCheckout();
+  
   await shoppingApp_ReusableFunction.paymentDetails(firstRecord);
   await shoppingApp_ReusableFunction.validateOrder();
   await shoppingApp_ReusableFunction.downloadInvoice();
