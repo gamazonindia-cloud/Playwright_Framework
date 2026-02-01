@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { ExcelDataValidator } from "../../utils/excelDataValidator";
 import * as path from "path";
 import { TestPageReusableFunctions } from "../../src/pages/Testing/TestingPage/TestPageReusableFunctions";
-test.only("Testing", async ({ page }) => {
+test.only("Purchase Item", async ({ page }) => {
   const excelPath = path.join(__dirname, "/PurchaseItemTestData.xlsx");
 
   // Fetch only enabled datasets
