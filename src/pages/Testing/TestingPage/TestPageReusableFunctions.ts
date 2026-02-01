@@ -1,7 +1,9 @@
 import { expect, Page } from "@playwright/test";
 import { DatasetRow } from "../../../../utils/excelDataValidator";
+import { getLatestDownloadedFile } from "../../../../utils/utilityKeyword";
 export class TestPageReusableFunctions {
     constructor(private page: Page) {}
+
 
   async test_Login(record: DatasetRow) {
 
@@ -80,8 +82,12 @@ export class TestPageReusableFunctions {
   }
   async downloadInvoice() {
 
-    await this.page.getByText("Download Invoice").click();
-    await this.page.setDefaultTimeout(5000);
-    console.log("✅ Invoice Downloaded!!!");
+  
+  const [download] = await Promise.all([
+  this.page.waitForEvent('download'),
+  this.page.getByText("Download Invoice").click()
+  ]);
+
+  await download.saveAs(download.suggestedFilename());
   }
 }

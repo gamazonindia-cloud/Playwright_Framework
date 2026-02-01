@@ -4,7 +4,7 @@ import * as path from "path";
 import { CommonFunctions } from "../../../../src/pages/common/CommonFunctions";
 import { FixedAssetResuableFunctions } from "../../../../src/pages/finance/FA/FixedAssetResuableFunctions";
 
-test.only("Add an Asset", async ({ page }) => {
+test("Add an Asset", async ({ page }) => {
   const excelPath = path.join(__dirname, "/AddAnAssetTestData.xlsx");
 
   // Fetch only enabled datasets
