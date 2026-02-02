@@ -6,7 +6,7 @@ import os from 'os';
 import ExcelJS from 'exceljs';
 import { exec } from 'child_process';
 
-test.only('desktop automation', async () => {
+test('desktop automation', async () => {
   exec('"C:\\Program Files (x86)\\AutoIt3\\AutoIt3.exe" "notePadTest.au3"');
 
 });
