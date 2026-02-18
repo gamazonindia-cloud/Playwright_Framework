@@ -10,7 +10,7 @@ export class TestPageReusableFunctions {
     await this.page.goto('https://automationexercise.com/');
     await this.page.getByText(" Signup / Login").click();
     await this.page.getByPlaceholder("Email Address").first().fill(record.UserName);
-    await this.page.getByPlaceholder("Password").fill(record.Password);
+    await this.page.getByPlaceholder("Password").fill(process.env[record.Password]);
     await this.page.getByText("Login",{exact:true}).click();
 
   }

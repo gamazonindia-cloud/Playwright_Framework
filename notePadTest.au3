@@ -22,31 +22,22 @@ Sleep(3000)
 Send("{ENTER}")
 Sleep(3000)
 
-; Focus File name textbox
-ControlFocus("Save as", "", "Edit1")
-Sleep(2000)
+WinWaitActive("Save as")
+Sleep(3000)
 
-; Clear existing text
 ControlSetText("Save as", "", "Edit1", "")
+Sleep(3000)
+ControlFocus("Save as", "", "Edit1")
+Sleep(3000)
+
+Local $file = "C:\Users\Deepak Maurya\Downloads\Test1.txt"
+
+For $i = 1 To StringLen($file)
+    ControlSend("Save as", "", "Edit1", StringMid($file, $i, 1))
+    Sleep(120)
+Next
 Sleep(4000)
 
-; Type file name
-ControlSetText("Save as", "", "Edit1", "Test1.txt")
-Sleep(4000)
-
-;WinWaitActive("Save as")
-;Sleep(2000)
-;ControlSetText("Save as", "", "Edit1", "C:\Users\Deepak Maurya\Downloads\Testing.txt")
-;Sleep(2000)
 Send("{ENTER}")
 
-
-;ControlSetText("Save as", "", "Edit1", "C:\Users\Deepak Maurya\Downloads\Test123.txt")
-;Sleep(2000)
-;ControlFocus("Save as", "", "Edit1")
-;Send("{ENTER}")
-;Sleep(4000)
-;Send("{TAB 4}")
-;Sleep(2000)
-;Send("{ENTER}")
 
