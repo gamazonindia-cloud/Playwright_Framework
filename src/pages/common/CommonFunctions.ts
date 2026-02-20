@@ -107,6 +107,32 @@ class CommonFunctions {
         }
     });
   }
+  async autoDataGeneration(Length:number, Prefix:string, Suffix:string, Allowuppercase:boolean, Allowlowercase:boolean, Allownumbers:boolean, AllowSpecialChars:boolean) {
+        //** Please Enter your Length **//
+        const length = Length;
+        const prefix = Prefix;
+        const suffix = Suffix;
+        const allowUppercase = Allowuppercase;
+        const allowLowercase = Allowlowercase;
+        const allowNumbers = Allownumbers;
+        const allowSpecialChars = AllowSpecialChars;
+        //** Please Enter your length **//
+        let generatedLength = length - prefix.length - suffix.length;
+        let characters = '';
+        if (allowUppercase) characters += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        if (allowLowercase) characters += 'abcdefghijklmnopqrstuvwxyz';
+        if (allowNumbers) characters += '0123456789';
+        if (allowSpecialChars) characters += '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+        let result = prefix;
+
+        for (let i = 0; i < generatedLength; i++) {
+          const randomIndex = Math.floor(Math.random() * characters.length);
+          result += characters[randomIndex];
+        }
+        result += suffix;
+        //console.log("Generated Data: ", result);
+        return result;
+  }
 }
 
 export { CommonFunctions };
