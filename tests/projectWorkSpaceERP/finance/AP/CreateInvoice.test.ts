@@ -16,7 +16,6 @@ test("Create an Invoice", async ({ page }) => {
   const firstRecord = enabledDatasets[0];
   
   const commonFunctions = new CommonFunctions(page);
-  const fixedAssetFunctions = new FixedAssetResuableFunctions(page);
   const invoicePage = new InvoicePageReusableFunctions(page);
   await commonFunctions.login(firstRecord);
   await commonFunctions.navigateToMenuItem("Payables", "Invoices");
