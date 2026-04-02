@@ -1,7 +1,12 @@
 import { Page } from '@playwright/test';
 import { DatasetRow } from '../../../../utils/excelDataValidator';
 
+    const prefix: string = "OpKey_Inv_";
+    const randomNumber: number = Math.floor(Math.random() * 1000000);
+    const InvoiceNumber: string = `${prefix}${randomNumber}`;
 export class InvoicePageReusableFunctions {
+    
+
   private formattedDate: string;
 
   constructor(private page: Page) {
@@ -41,12 +46,8 @@ export class InvoicePageReusableFunctions {
   }
 
   //Randomly generated Number field
-  if (record.Number) {
-    const prefix: string = "Test";
-    const randomNumber: number = Math.floor(Math.random() * 10000);
-    const result: string = `${prefix}${randomNumber}`;
-
-    await this.page.getByLabel('Number').fill(result);
+  if (record.Number) {    
+    await this.page.getByLabel('Number').fill(InvoiceNumber);
   }
 
 
@@ -105,7 +106,62 @@ export class InvoicePageReusableFunctions {
       const number = parseInt(record.Amount);
     await this.page.getByRole('cell', { name: 'Amount' }).getByLabel('Amount').fill(number.toString());
     }
+    if (record.DistributionCombination) {
+      console.log(record.DistributionCombination);
+    await this.page.getByRole('cell', { name: 'Distribution Combination' }).getByLabel('Distribution Combination').fill(record.DistributionCombination);
+    }
+    if (record.ShipToLocation) {
+      console.log(record.ShipToLocation);
+    await this.page.getByRole('cell', { name: 'Ship-to Location' }).getByLabel('Ship-to Location').fill(record.ShipToLocation);
+    }
+    if (record.accountingDate) {
+      const AccountingDate = parseInt(record.accountingDate);
+    await this.page.getByRole('cell', { name: 'Accounting Date' }).getByLabel('Accounting Date').fill(this.formattedDate);
+    }
+    
   }
+  async saveInvoice() {
+
+    await this.page.getByRole('button', { name: 'Save', exact: true }).click();
+
+  }
+  async validateInvoiceAndReleaseHold() {
+
+    await this.page.getByRole('link', { name: 'Invoice Actions' }).click();
+    await this.page.getByText('Validate').click();
+
+  }
+  async postToLedgerAndViewAccounting() {
+
+    await this.page.getByRole('link', { name: 'Invoice Actions' }).click();
+    await this.page.getByText('Account in Final').click();
+    await this.page.getByRole('button', { name: 'View Accounting'}).click();
+    //await this.page.getByText('View Accounting').click();
+    await this.page.getByRole('button', { name: 'Done' }).click();
+  
+  }
+  async saveAndCloseInvoice() {
+
+    await this.page.getByRole('button', { name: 'Save and Close' }).click();
+
+  }
+  async manageInvoice() {
+
+    await this.page.getByLabel('Invoice Number').fill(InvoiceNumber);
+    await this.page.getByRole('button', { name: 'Search', exact: true }).click();
+  }
+  async validateInvoice() {
+
+    if (await this.page.getByRole('cell', { name: 'Not paid' }).nth(1).textContent() === 'Not paid') {
+      console.log('Invoice is validated successfully and is in Not Paid status');
+    } else {
+      console.log('Invoice validation failed or status is not updated to Not Paid');
+    }
+
+  }
+
+  
+
 
   async isInvoiceCreated() {
     return await this.page.isVisible('text=Invoice created successfully');

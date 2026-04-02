@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { UploadFileReusableFunctions } from "../../src/pages/Testing/TestingPage/uploadFileReusableFunctions";
 import { exec } from "child_process";
-test.only("Upload File", async ({ page }) => {
+test("Upload File", async ({ page }) => {
 
   
     const uploadFile = new UploadFileReusableFunctions(page);
