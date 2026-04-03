@@ -189,9 +189,9 @@ export class InvoicePageReusableFunctions {
   }
   async addInvoice() {
     await this.page.getByRole('button', { name: 'Select and Add' }).click();
-    await this.page.getByLabel('Invoice Number').fill("OpKey_Inv_133409");
+    await this.page.getByLabel('Invoice Number').fill(InvoiceNumber);
     await this.page.getByRole('button', { name: 'Search', exact: true }).click();
-    await this.page.getByRole('cell', { name: 'OpKey_Inv_133409', exact: true }).click();
+    await this.page.getByRole('cell', { name: InvoiceNumber, exact: true }).click();
     await this.page.getByRole('button', { name: 'Apply' }).click();
     await this.page.getByRole('button', { name: 'OK' }).click();
     await this.page.getByRole('button', { name: 'Save and Close' }).click();
