@@ -42,12 +42,7 @@ class CommonFunctions {
     Keyword_Library.SetPage(this.page);
 
     await this.page.getByLabel("Navigator").click();
-    await Keyword_Library.Web_ClickByText({
-      label: "Show More",
-      partial: true,
-      index: 0,
-    });
-
+    await Keyword_Library.Web_ClickByText({label: "Show More",partial: true,index: 0,});
     const menu1Locator = this.page.locator(
       `//div/span[text()='${menuItem1}']/following::span[text()='${menuItem2}']`
     );

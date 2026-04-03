@@ -8,6 +8,7 @@ export class InvoicePageReusableFunctions {
     
 
   private formattedDate: string;
+  private paymentNumber: string;
 
   constructor(private page: Page) {
     this.page = page;
@@ -159,11 +160,66 @@ export class InvoicePageReusableFunctions {
     }
 
   }
-
-  
-
-
   async isInvoiceCreated() {
     return await this.page.isVisible('text=Invoice created successfully');
+  }
+  async createPayment(record : DatasetRow) {
+    
+    if (record.BusinessUnit) {
+      await this.page.getByLabel('Business Unit').fill(record.BusinessUnit );
+      await this.page.keyboard.press('Enter');
+    }
+    if (record.Supplier) {
+    await this.page.getByLabel('Supplier').nth(0).fill(record.Supplier);
+    await this.page.keyboard.press('Enter');
+    }
+    if (record.DisbursementBankAccount) {
+      await this.page.getByLabel('Disbursement Bank Account').fill(record.DisbursementBankAccount);
+      await this.page.keyboard.press('Enter');
+    }
+    if (record.PaymentMethod) {
+      await this.page.getByLabel('Payment Method').fill(record.PaymentMethod);
+      await this.page.keyboard.press('Enter');
+    }
+    if (record.PaymentProcessProfile) {
+      await this.page.getByLabel('Payment Process Profile').fill(record.PaymentProcessProfile);
+      await this.page.keyboard.press('Enter');
+    }
+    
+  }
+  async addInvoice() {
+    await this.page.getByRole('button', { name: 'Select and Add' }).click();
+    await this.page.getByLabel('Invoice Number').fill("OpKey_Inv_133409");
+    await this.page.getByRole('button', { name: 'Search', exact: true }).click();
+    await this.page.getByRole('cell', { name: 'OpKey_Inv_133409', exact: true }).click();
+    await this.page.getByRole('button', { name: 'Apply' }).click();
+    await this.page.getByRole('button', { name: 'OK' }).click();
+    await this.page.getByRole('button', { name: 'Save and Close' }).click();
+
+    }
+  async getPaymentNumber() {
+    
+      const paymenttext = await this.page.locator("//div[@class='x1mu']").textContent();
+      const parts = paymenttext.split(" ");
+      const payment = parts[1];
+      await this.page.getByRole('button', { name: 'OK' }).click();
+      console.log(`Payment Number: ${payment}`);
+      this.paymentNumber = payment;
+  }
+  async managePayment() {
+
+    await this.page.getByLabel('Payment Number').fill(this.paymentNumber);
+    await this.page.getByRole('button', { name: 'Search', exact: true }).click();
+  }
+  async validatePayment() {
+
+    await this.page.getByRole('cell', { name: this.paymentNumber, exact: true }).textContent().then((text) => {
+      if (text === this.paymentNumber) {
+        console.log('Payment is created successfully and is in correct status');
+      } else {
+        console.log('Payment creation failed or status is not updated correctly');
+      }
+    });
+    
   }
 }
