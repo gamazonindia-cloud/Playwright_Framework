@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 import { DatasetRow } from '../../../../utils/excelDataValidator';
 
     const prefix: string = "OpKey_Inv_";
@@ -48,7 +48,9 @@ export class InvoicePageReusableFunctions {
 
   //Randomly generated Number field
   if (record.Number) {    
+    await this.page.waitForTimeout(3000);
     await this.page.getByLabel('Number').fill(InvoiceNumber);
+    await this.page.keyboard.press('Enter');
   }
 
 
@@ -57,8 +59,10 @@ export class InvoicePageReusableFunctions {
   }
 
   if (record.Amount) {
+    await this.page.waitForTimeout(3000);
     const number = parseInt(record.Amount);
     await this.page.getByRole('textbox', { name: 'Amount' }).fill(number.toString());
+    await this.page.keyboard.press('Enter');
   }
 
   if (record.Type) {
@@ -129,21 +133,31 @@ export class InvoicePageReusableFunctions {
   async validateInvoiceAndReleaseHold() {
 
     await this.page.getByRole('link', { name: 'Invoice Actions' }).click();
-    await this.page.getByText('Validate').click();
-
+    await this.page.waitForTimeout(3000);
+    await this.page.keyboard.press('Control+Alt+V');
+    await this.page.waitForTimeout(15000)
   }
   async postToLedgerAndViewAccounting() {
 
     await this.page.getByRole('link', { name: 'Invoice Actions' }).click();
-    await this.page.getByText('Account in Final').click();
+    await this.page.waitForTimeout(3000);
+    //await this.page.getByText('Account in Final', { exact: true }).click();
+    for (let i = 0; i < 11; i++) {
+    await this.page.waitForTimeout(500);
+    await this.page.keyboard.press('ArrowDown');
+    }
+    await this.page.keyboard.press('Enter');
+    await this.page.waitForTimeout(3000);
     await this.page.getByRole('button', { name: 'View Accounting'}).click();
-    //await this.page.getByText('View Accounting').click();
+    await this.page.waitForTimeout(3000);
     await this.page.getByRole('button', { name: 'Done' }).click();
+    await this.page.waitForTimeout(3000);
   
   }
   async saveAndCloseInvoice() {
 
     await this.page.getByRole('button', { name: 'Save and Close' }).click();
+    await this.page.waitForTimeout(3000);
 
   }
   async manageInvoice() {

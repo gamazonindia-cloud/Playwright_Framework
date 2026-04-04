@@ -19,7 +19,7 @@ async function waitForAppReady(page: Page) {
   } catch {
     console.warn("⚠️ Spinner not found or still visible after timeout.");
   }
-  await page.waitForTimeout(300);
+  await page.waitForTimeout(3000);
 }
 
 // Utility: Highlight element for debugging
