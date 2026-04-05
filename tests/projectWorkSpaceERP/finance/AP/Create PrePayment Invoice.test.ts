@@ -1,11 +1,10 @@
 import { test, expect } from "@playwright/test";
-import { ExcelDataValidator } from "../../../../utils/excelDataValidator";
+import { ExcelDataValidator } from "../../../../utils/excelDataValidator.js";
 import * as path from "path";
 import { CommonFunctions } from "../../../../src/pages/common/CommonFunctions";
-import { FixedAssetResuableFunctions } from "../../../../src/pages/finance/FA/FixedAssetResuableFunctions";
 import { InvoicePageReusableFunctions } from "../../../../src/pages/finance/AP/InvoicePageReusableFunctions";
-test("Create an Invoice", async ({ page }) => {
-  const excelPath = path.join(__dirname, "/CreaetInvoiceTestData.xlsx");
+test("Create PrePayment Invoice", async ({ page }) => {
+  const excelPath = path.join(__dirname, "/CreatePrePaymentInvoiceData.xlsx");
 
   // Fetch only enabled datasets
   const enabledDatasets = ExcelDataValidator.getEnabledDatasets(excelPath);
@@ -21,9 +20,21 @@ test("Create an Invoice", async ({ page }) => {
   await commonFunctions.navigateToMenuItem("Payables", "Invoices");
   await commonFunctions.selectTastkFromTasksPanel("Invoices", "Create Invoice");
   await invoicePage.createInvoiceHeader(firstRecord);
-  //testing
+  await invoicePage.createInvoiceLine(firstRecord);
+  await invoicePage.saveInvoice();
+  await invoicePage.validateInvoiceAndReleaseHold();
+  await invoicePage.saveInvoice();
+  await invoicePage.postToLedgerAndViewAccounting();
+  await invoicePage.saveAndCloseInvoice();
+  await commonFunctions.selectTastkFromTasksPanel("Invoices", "Manage Invoices");
+  await invoicePage.manageInvoice();
+  await invoicePage.validateInvoice();
+
+
+
+
   
-  
+
 
 
 });
