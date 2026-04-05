@@ -13,11 +13,18 @@ export class InvoicePageReusableFunctions {
   constructor(private page: Page) {
     this.page = page;
     const date = new Date();
+
+    // subtract 5 days
+    date.setDate(date.getDate() - 4);
+
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const year = date.getFullYear();
-    this.formattedDate = `${month}/${day}/${year}`;
-    console.log(this.formattedDate); // 04/01/2026
+
+    const formattedDate = `${month}/${day}/${year}`;
+    console.log(formattedDate);
+    this.formattedDate = formattedDate;
+
   }
   
   async createInvoiceHeader(record : DatasetRow) {
@@ -151,7 +158,8 @@ export class InvoicePageReusableFunctions {
     await this.page.getByRole('button', { name: 'View Accounting'}).click();
     await this.page.waitForTimeout(3000);
     await this.page.getByRole('button', { name: 'Done' }).click();
-    await this.page.waitForTimeout(3000);
+    await this.page.waitForLoadState('networkidle');
+    //await this.page.waitForTimeout(3000);
   
   }
   async saveAndCloseInvoice() {
@@ -186,6 +194,7 @@ export class InvoicePageReusableFunctions {
     if (record.Supplier) {
     await this.page.getByLabel('Supplier').nth(0).fill(record.Supplier);
     await this.page.keyboard.press('Enter');
+    await this.page.getByLabel('Payment Date').nth(0).fill(this.formattedDate);
     }
     if (record.DisbursementBankAccount) {
       await this.page.getByLabel('Disbursement Bank Account').fill(record.DisbursementBankAccount);

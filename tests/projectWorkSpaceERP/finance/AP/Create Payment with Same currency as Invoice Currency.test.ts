@@ -14,11 +14,8 @@ test.only("Create Payment with Same currency as Invoice Currency", async ({ page
   const headers = ExcelDataValidator.getHeaders(excelPath);
 
   console.log(`\n✅ Total Enabled Datasets: ${enabledDatasets.length}\n`);
-  console.log('Headers:', headers);
-  console.log('Enabled datasets:', enabledDatasets);
   console.log(`\n\nMethod 2: Get first record`);
   const firstRecord = enabledDatasets[0];
-  console.log('First record:', firstRecord);
   
   const commonFunctions = new CommonFunctions(page);
   const invoicePage = new InvoicePageReusableFunctions(page);

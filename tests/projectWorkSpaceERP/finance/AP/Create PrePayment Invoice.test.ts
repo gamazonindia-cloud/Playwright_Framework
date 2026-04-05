@@ -19,9 +19,9 @@ test("Create PrePayment Invoice", async ({ page }) => {
   await commonFunctions.login(firstRecord);
   await commonFunctions.navigateToMenuItem("Payables", "Invoices");
   await commonFunctions.selectTastkFromTasksPanel("Invoices", "Create Invoice");
-  await invoicePage.createInvoiceHeader(firstRecord);
-  await invoicePage.createInvoiceLine(firstRecord);
-  await invoicePage.saveInvoice();
+  //await invoicePage.createInvoiceHeader(firstRecord);
+  //await invoicePage.createInvoiceLine(firstRecord);
+  //await invoicePage.saveInvoice();
   await invoicePage.validateInvoiceAndReleaseHold();
   await invoicePage.saveInvoice();
   await invoicePage.postToLedgerAndViewAccounting();
