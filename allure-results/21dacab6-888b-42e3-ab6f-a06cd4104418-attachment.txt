@@ -1,0 +1,4 @@
+[OpenBrowser] Navigated to https://emhr-dev2.login.us6.oraclecloud.com/
+[Web_TypeByText] ✅ Typed '5000079' in User ID
+[Web_TypeByText] ✅ Typed 'gwH;f97!^2DQ76' in Password
+[Web_ClickByText] ✅ Clicked Sign In

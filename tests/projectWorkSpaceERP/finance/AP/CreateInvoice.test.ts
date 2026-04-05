@@ -21,6 +21,7 @@ test("Create an Invoice", async ({ page }) => {
   await commonFunctions.navigateToMenuItem("Payables", "Invoices");
   await commonFunctions.selectTastkFromTasksPanel("Invoices", "Create Invoice");
   await invoicePage.createInvoiceHeader(firstRecord);
+  //testing
   
   
 

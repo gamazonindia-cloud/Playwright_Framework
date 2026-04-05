@@ -1,0 +1,11 @@
+
+✅ Total Enabled Datasets: 1
+
+
+
+Method 2: Get first record
+04/05/2026
+[OpenBrowser] Navigated to https://emhr-dev2.login.us6.oraclecloud.com/
+[Web_TypeByText] ✅ Typed '334816' in User ID
+[Web_TypeByText] ✅ Typed 'gwH;f97!^2DQ70' in Password
+[Web_ClickByText] ✅ Clicked Sign In
