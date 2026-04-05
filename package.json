@@ -9,13 +9,8 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-<<<<<<< HEAD
-    "@playwright/test": "^1.57.0",
-    "@types/node": "^24.12.2",
-=======
     "@playwright/test": "^1.59.1",
-    "@types/node": "^24.10.1",
->>>>>>> fd6b3ecdbf59cff8b6d6fac7a5f115b186fcebc9
+    "@types/node": "^24.12.2",
     "allure-commandline": "^2.36.0",
     "allure-playwright": "^3.4.5",
     "ts-node": "^10.9.2"
