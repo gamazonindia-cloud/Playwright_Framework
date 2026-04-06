@@ -234,6 +234,48 @@ export class InvoicePageReusableFunctions {
     await this.page.getByLabel('Payment Number').fill(this.paymentNumber);
     await this.page.getByRole('button', { name: 'Search', exact: true }).click();
   }
+  async approveInvoice(InvoiceNumber: string) {
+
+    await this.page.getByLabel("Home").click();
+    for (let i = 0; i < 0; i++) {
+      await this.page.waitForTimeout(10000);
+      await this.page.reload();
+    }
+    //await this.page.getByText('Notifications', { exact: false }).click();
+    await this.page.locator("//a[@id='pt1:_UISatr:0:cil1']").click();
+    await this.page.waitForTimeout(5000);
+    const isTextVisible = await this.page.getByText('Show All').nth(0).isVisible();
+    console.log(isTextVisible); // true or false
+    if (isTextVisible) {
+      await this.page.getByText('Show All').click();
+      await this.page.getByText('Worklist').click();
+      const [newPage] = await Promise.all([
+      this.page.context().waitForEvent('page'),
+      this.page.click('text=Open')
+      ]);
+      await newPage.waitForLoadState();
+      await newPage.locator("//input[@type='text']").fill(InvoiceNumber);
+      await newPage.keyboard.press('Enter');
+      await this.page.waitForTimeout(3000);
+      const text = await newPage.locator("//tr[1]/td[3]/span/table/tbody/tr/td/a").textContent();
+      console.log(text);
+      await newPage.locator("//tr[1]/td[3]/span/table/tbody/tr/td/a").click();
+      await newPage.waitForTimeout(3000);
+      const [new2Page] = await Promise.all([
+      await newPage.context().waitForEvent('page'),
+      await newPage.click('text=Open Payment Window')
+      ]);
+      await new2Page.waitForLoadState();
+      await new2Page.getByText('View Invoice').click();
+      await new2Page.waitForTimeout(3000);
+      
+
+
+    }
+
+
+    
+  }
   async validatePayment() {
 
     await this.page.getByRole('cell', { name: this.paymentNumber, exact: true }).textContent().then((text) => {
@@ -243,6 +285,7 @@ export class InvoicePageReusableFunctions {
         console.log('Payment creation failed or status is not updated correctly');
       }
     });
+    
     
   }
 }
