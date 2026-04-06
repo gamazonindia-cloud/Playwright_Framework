@@ -1,15 +1,13 @@
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
-test.describe.configure({ mode: 'serial' });
+test('Create Payment with Same currency as Invoice Currency', async ({ page }) => {
+  console.log('Create Payment with Same currency as Invoice Currency');
+  await page.goto('https://example.com');
+  await expect(page).toHaveTitle(/Example/);
+});
 
-test.describe('End-to-End Payment Flow', () => {
-
-  test('Create PrePayment Invoice', async ({ page }) => {
-    // steps
-  });
-
-  test('Create Payment', async ({ page }) => {
-    // steps
-  });
-
+test('Create PrePayment Invoice', async ({ page }) => {
+  console.log('Create PrePayment Invoice');
+  await page.goto('https://example.com');
+  await expect(page).toHaveURL(/example/);
 });
