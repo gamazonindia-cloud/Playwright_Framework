@@ -56,8 +56,27 @@ class CommonFunctions {
     await Keyword_Library.Web_ClickByText({
       label: "Next",
       partial: true,
-      index: 1,
+      index: 0,
     });
+    await Keyword_Library.Web_ClickByText({
+      label: "Try another way",
+      partial: true,
+      index: 0,
+    });
+    await Keyword_Library.Web_ClickByText({
+      label: "Bypass Code",
+      partial: true,
+      index: 0,
+    });
+
+    const code=parseInt(record.bypasscode);
+    await this.page.locator("//oj-idaas-custom-text[text()='Enter the bypass code.']/following::input").fill(code.toString());
+
+    await Keyword_Library.Web_ClickByText({
+      label: "Verify",
+      partial: true,
+      index: 0,
+      });
   }
 
   async navigateToMenuItem(menuItem1: string, menuItem2: string) {

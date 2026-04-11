@@ -19,51 +19,53 @@ export class CoreHrResuableFunctions {
     if (record.PersonalDetails) {
     
     if (true) {
-      await this.page.getByLabel("Communication Info").click();
+      await this.page.getByText("Communication Info").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Address").click();
+      await this.page.getByText("Address").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Legislative Info").click();
+      await this.page.getByText("Legislative Info").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Citizenship Info").click();
+      await this.page.getByText("Citizenship Info").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Passport Info").click();
+      await this.page.getByText("Passport Info").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Driver's Licenses").click();
+      await this.page.getByText("Driver's Licenses").nth(0).click();
     }
     
     if (true) {
-      await this.page.getByLabel("Visas and Permits").click();
+      await this.page.getByText("Visas and Permits").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Family and Emergency Contacts").click();
+      await this.page.getByText("Family and Emergency Contacts").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Assign Managers").click();
+      await this.page.getByText("Assign Managers").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Work Relationship Info").click();
+      await this.page.getByText("Work Relationship Info").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Payroll Details").click();
+      await this.page.getByText("Payroll Details").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Salary").click();
+      await this.page.getByText("Salary").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Compensation").click();
+      await this.page.getByText("Compensation").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Add Direct Reports").click();
+      await this.page.getByText("Add Direct Reports").nth(0).click();
     }
     if (true) {
-      await this.page.getByLabel("Comments and Attachments").click();
+      await this.page.getByText("Comments and Attachments").nth(0).click();
     }
+
+    await this.page.locator("//span[text()='Contin']").click();
 
   }
   
@@ -71,15 +73,18 @@ export class CoreHrResuableFunctions {
   async hireEmployee_WhenAndWhy(record: DatasetRow) {
     
     if (record.HireDate) {
-      await this.page.getByLabel("When is the employee hire date?").fill(record.HireDate);
+      const formattedDate = new Date((record.HireDate - 25569) * 86400 * 1000).toLocaleDateString('en-US');
+      await this.page.getByLabel("When is the employee hire date?").type(formattedDate.toString());
     }
     if (record.Action) {
-      await this.page.locator("(//label[text()='Action']/following::input[@placeholder='Select a value'])[1]").fill(record.Action);
+      await this.page.getByLabel("What's the way to hire an employee?").nth(0).fill(record.Action);
+      
     }
     if(record.LegalEmployer) {
       await this.page.waitForTimeout(2000);
-      await this.page.locator("(//label[text()='Legal Employer']/following::input[@placeholder='Select a value'])[1]").type(record.LegalEmployer,{delay:200});
-      await this.page.locator("(//label[text()='Legal Employer']/following::input[@placeholder='Select a value'])[1]").press('Enter');   
+      await this.page.getByLabel("Legal Employer").fill(record.LegalEmployer);
+      //await this.page.locator("(//label[text()='Legal Employer']/following::input[@placeholder='Select a value'])[1]").type(record.LegalEmployer,{delay:200});
+      //await this.page.locator("(//label[text()='Legal Employer']/following::input[@placeholder='Select a value'])[1]").press('Enter');   
     }
     if (record.ChangeReason) {
       await this.page.locator("(//label[text()='Change Reason']/following::input[@placeholder='Select a value'])[1]").type(record.ChangeReason,{delay:200});

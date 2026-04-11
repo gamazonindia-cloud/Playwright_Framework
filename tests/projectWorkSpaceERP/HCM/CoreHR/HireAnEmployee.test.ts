@@ -16,7 +16,7 @@ test.only("Hire an Employee", async ({ page }) => {
   await commonFunctions.loginWithPasscode(firstRecord);
   await commonFunctions.navigateToItemFromHomePage("My Client Groups", "Hire an Employee");
   await hireEmployee_ReusableFunction.hireEmployee_whatInfoDoYouWantToManage(firstRecord);
-  await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
+  //await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
   await hireEmployee_ReusableFunction.hireEmployee_WhenAndWhy(firstRecord);
   await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
   await hireEmployee_ReusableFunction.hireEmployee_PersonalDetails(firstRecord);
