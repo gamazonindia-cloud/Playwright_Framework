@@ -14,7 +14,60 @@ import { CommonFunctions } from "../../common/CommonFunctions";
 export class CoreHrResuableFunctions {
   constructor(private page: Page) {}
  
+  async hireEmployee_whatInfoDoYouWantToManage(record: DatasetRow) {
+
+    if (record.PersonalDetails) {
+    
+    if (true) {
+      await this.page.getByLabel("Communication Info").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Address").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Legislative Info").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Citizenship Info").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Passport Info").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Driver's Licenses").click();
+    }
+    
+    if (true) {
+      await this.page.getByLabel("Visas and Permits").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Family and Emergency Contacts").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Assign Managers").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Work Relationship Info").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Payroll Details").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Salary").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Compensation").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Add Direct Reports").click();
+    }
+    if (true) {
+      await this.page.getByLabel("Comments and Attachments").click();
+    }
+
+  }
   
+  }
   async hireEmployee_WhenAndWhy(record: DatasetRow) {
     
     if (record.HireDate) {
@@ -23,7 +76,7 @@ export class CoreHrResuableFunctions {
     if (record.Action) {
       await this.page.locator("(//label[text()='Action']/following::input[@placeholder='Select a value'])[1]").fill(record.Action);
     }
-    if (record.LegalEmployer) {
+    if(record.LegalEmployer) {
       await this.page.waitForTimeout(2000);
       await this.page.locator("(//label[text()='Legal Employer']/following::input[@placeholder='Select a value'])[1]").type(record.LegalEmployer,{delay:200});
       await this.page.locator("(//label[text()='Legal Employer']/following::input[@placeholder='Select a value'])[1]").press('Enter');   

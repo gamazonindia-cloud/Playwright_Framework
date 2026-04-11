@@ -37,6 +37,28 @@ class CommonFunctions {
       index: 1,
     });
   }
+  async loginWithPasscode(record: DatasetRow) {
+   
+    Keyword_Library.SetPage(this.page);
+    await Keyword_Library.OpenBrowser({ url: config.baseURL });
+    await Keyword_Library.Web_TypeByText({
+      label: "Username",
+      value: `${record.UserName}`,
+      partial: false,
+      index: 0,
+    });
+    await Keyword_Library.Web_TypeByText({
+      label: "Password",
+      value: `${record.Password}`,
+      partial: false,
+      index: 0,
+    });
+    await Keyword_Library.Web_ClickByText({
+      label: "Next",
+      partial: true,
+      index: 1,
+    });
+  }
 
   async navigateToMenuItem(menuItem1: string, menuItem2: string) {
     Keyword_Library.SetPage(this.page);

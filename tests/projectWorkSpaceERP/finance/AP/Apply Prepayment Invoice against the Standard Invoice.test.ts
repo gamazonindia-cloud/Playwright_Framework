@@ -3,7 +3,7 @@ import { ExcelDataValidator } from "../../../../utils/excelDataValidator";
 import * as path from "path";
 import { CommonFunctions } from "../../../../src/pages/common/CommonFunctions";
 import { InvoicePageReusableFunctions } from "../../../../src/pages/finance/AP/InvoicePageReusableFunctions.js";
-test.only("Create Payment with Same currency as Invoice Currency", async ({ page }) => {
+test("Create Payment with Same currency as Invoice Currency", async ({ page }) => {
   const excelPath = path.join(__dirname, "Create Payment with Same currency as Invoice Currency Data.xlsx");
 
   // Fetch only enabled datasets

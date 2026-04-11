@@ -1,4 +1,4 @@
 module.exports = {
-  //baseURL: 'https://ekaw-dev8.fa.us2.oraclecloud.com/',
-  testURL: 'https://emhr-dev2.login.us6.oraclecloud.com/',
+  baseURL:'https://idcs-de49ffd09f8e4c489360c845199260bb.identity.oraclecloud.com/ui/v1/signin',
 };
+

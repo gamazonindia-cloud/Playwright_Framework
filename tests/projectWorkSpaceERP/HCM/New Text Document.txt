@@ -1,0 +1,2 @@
+//baseURL1: 'https://ekaw-dev8.fa.us2.oraclecloud.com/',
+  //testURL1: 'https://emhr-dev3.login.us6.oraclecloud.com/',

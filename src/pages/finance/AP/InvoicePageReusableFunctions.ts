@@ -244,10 +244,10 @@ export class InvoicePageReusableFunctions {
     //await this.page.getByText('Notifications', { exact: false }).click();
     await this.page.locator("//a[@id='pt1:_UISatr:0:cil1']").click();
     await this.page.waitForTimeout(5000);
-    const isTextVisible = await this.page.getByText('Show All').nth(0).isVisible();
+    const isTextVisible = await this.page.locator("(//a[text()='Show All'])[1]").textContent();
     console.log(isTextVisible); // true or false
-    if (isTextVisible) {
-      await this.page.getByText('Show All').click();
+    if (isTextVisible=='Show All') {
+      await this.page.locator("(//a[text()='Show All'])[1]").click();
       await this.page.getByText('Worklist').click();
       const [newPage] = await Promise.all([
       this.page.context().waitForEvent('page'),

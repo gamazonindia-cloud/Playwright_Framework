@@ -3,7 +3,7 @@ import { ExcelDataValidator } from "../../../../utils/excelDataValidator";
 import * as path from "path";
 import { CommonFunctions } from "../../../../src/pages/common/CommonFunctions";
 import { CoreHrResuableFunctions } from "../../../../src/pages/hcm/CoreHR/CoreHrResuableFunctions";
-test("Hire an Employee", async ({ page }) => {
+test.only("Hire an Employee", async ({ page }) => {
   test.setTimeout(1200000);
   const excelPath = path.join(__dirname, "/HireAnEmployeeTestData.xlsx");
 
@@ -13,8 +13,10 @@ test("Hire an Employee", async ({ page }) => {
   const commonFunctions = new CommonFunctions(page);
   const hireEmployee_ReusableFunction=new CoreHrResuableFunctions(page);
   await page.setDefaultTimeout(120000);
-  await commonFunctions.login(firstRecord);
+  await commonFunctions.loginWithPasscode(firstRecord);
   await commonFunctions.navigateToItemFromHomePage("My Client Groups", "Hire an Employee");
+  await hireEmployee_ReusableFunction.hireEmployee_whatInfoDoYouWantToManage(firstRecord);
+  await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
   await hireEmployee_ReusableFunction.hireEmployee_WhenAndWhy(firstRecord);
   await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
   await hireEmployee_ReusableFunction.hireEmployee_PersonalDetails(firstRecord);
