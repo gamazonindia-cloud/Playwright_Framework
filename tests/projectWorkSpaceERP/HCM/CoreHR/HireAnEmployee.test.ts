@@ -29,6 +29,10 @@ test.only("Hire an Employee", async ({ page }) => {
   await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
   await hireEmployee_ReusableFunction.hireEmployee_CitizenshipInfo(firstRecord);
   await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
+  await hireEmployee_ReusableFunction.hireEmployee_PassportInfo(firstRecord);
+  await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
+  await hireEmployee_ReusableFunction.hireEmployee_DriversLicenses(firstRecord);
+  await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
   await hireEmployee_ReusableFunction.hireEmployee_VisasAndPermits(firstRecord);
   await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
   await hireEmployee_ReusableFunction.hireEmployee_FamilyAndEmergencyContacts(firstRecord);
@@ -36,6 +40,8 @@ test.only("Hire an Employee", async ({ page }) => {
   await hireEmployee_ReusableFunction.hireEmployee_EmploymentDetails(firstRecord);
   await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
   await hireEmployee_ReusableFunction.hireEmployee_AssignManagers(firstRecord);
+  await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
+  await hireEmployee_ReusableFunction.hireEmployee_WorkRelationshipInfo(firstRecord);
   await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
   await hireEmployee_ReusableFunction.hireEmployee_PayrollDetails(firstRecord);
   await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();

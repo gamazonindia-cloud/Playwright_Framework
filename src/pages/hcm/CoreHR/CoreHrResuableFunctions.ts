@@ -74,21 +74,18 @@ export class CoreHrResuableFunctions {
     
     if (record.HireDate) {
       const formattedDate = new Date((record.HireDate - 25569) * 86400 * 1000).toLocaleDateString('en-US');
+      await this.page.getByLabel("When is the employee hire date?").clear();
       await this.page.getByLabel("When is the employee hire date?").type(formattedDate.toString());
+
     }
     if (record.Action) {
-      await this.page.getByLabel("What's the way to hire an employee?").nth(0).fill(record.Action);
+      await this.page.getByLabel("What's the way to hire an employee?").nth(1).fill(record.Action);
       
     }
     if(record.LegalEmployer) {
-      await this.page.waitForTimeout(2000);
-      await this.page.getByLabel("Legal Employer").fill(record.LegalEmployer);
-      //await this.page.locator("(//label[text()='Legal Employer']/following::input[@placeholder='Select a value'])[1]").type(record.LegalEmployer,{delay:200});
-      //await this.page.locator("(//label[text()='Legal Employer']/following::input[@placeholder='Select a value'])[1]").press('Enter');   
-    }
-    if (record.ChangeReason) {
-      await this.page.locator("(//label[text()='Change Reason']/following::input[@placeholder='Select a value'])[1]").type(record.ChangeReason,{delay:200});
-      await this.page.locator("(//label[text()='Change Reason']/following::input[@placeholder='Select a value'])[1]").press('Enter');
+      await this.page.waitForTimeout(3000);
+      await this.page.getByLabel("Legal Employer").nth(1).type(record.LegalEmployer,{delay:200});
+      await this.page.getByLabel("Legal Employer").nth(1).press('Enter');
     }
   }
   async hireEmployee_ToBeVisibleContinue()
@@ -108,12 +105,6 @@ export class CoreHrResuableFunctions {
       await this.page.locator("//button[text()='Contin']").waitFor();
       console.log("Clicked on Contin button");
       await this.page.waitForLoadState("networkidle");
-    //   const op=await this.page.locator("//label[text()='Citizenship']").isVisible();
-    //   if(op)
-    //   {
-    //     console.log("Clicked on Issuing Country button");
-    //      await this.page.locator("//label[text()='Issuing Country']").waitFor();
-    //   } 
      
        await this.page.waitForTimeout(3000);
     }
@@ -124,53 +115,60 @@ export class CoreHrResuableFunctions {
    
       const randomInt = Math.floor(Math.random() * 100000000);
       console.log("WWID is: " + randomInt);
-      await this.page.getByLabel("WWID").fill(randomInt.toString());
+     // await this.page.getByLabel("WWID").fill(randomInt.toString());
     
     if (record.FirstName) {
       await this.page.getByLabel("First Name").fill(First_Name);
     }
     if (record.LastName) {
-      await this.page.locator("(//label[text()='Last Name']//following::input)[1]").fill(Last_Name);
+      await this.page.getByLabel('Last Name').nth(0).fill(Last_Name);
     }
     if (record.Gender) {
       await this.page.locator("(//label[text()='Gender']//following::a)[1]").click();
       await this.page.locator("//li[text()='"+record.Gender+"']").click();
+
     }
     if (record.DateofBirth) {
-      await this.page.getByLabel("Date of Birth").fill(record.DateofBirth);
+      const formattedDate = new Date((record.DateofBirth - 25569) * 86400 * 1000).toLocaleDateString('en-US');
+      await this.page.getByLabel("Date of Birth").fill(formattedDate);
     }
     if (record.Country) {
-       await this.page.locator("(//label[text()='Country']//following::input[@placeholder='Select a value'])[1]").click();  
-      await this.page.keyboard.press('Control+A');
-      await this.page.keyboard.press('Delete');
-     
-      await this.page.locator("(//label[text()='Country']//following::input[@placeholder='Select a value'])[1]").type(record.Country,{delay:200});
-      await this.page.locator("(//label[text()='Country']//following::input[@placeholder='Select a value'])[1]").press('Enter');
-      console.log("hireEmployee_PersonalDetails executed");
+
+      await this.page.getByLabel("Country").nth(1).clear();
+      await this.page.getByLabel("Country").nth(1).type(record.Country,{delay:300});
+      await this.page.waitForTimeout(3000);
+      await this.page.getByLabel("Country").nth(1).press('Enter');
+      
     }
   }
     
   async hireEmployee_CommunicationInfo(record: DatasetRow)
   {
     
-    // if (record.Type) {
-    //   await this.page.locator("(//label[text()='Type']//following::input)[1]").click();
-    //   await this.page.locator("//li[text()='"+record.Type+"']").click();
-    // }
-    // if(record.AreaCode){
-    //   await this.page.getByLabel("Area Code").fill(record.AreaCode);
-    // }
-    // if(record.Number){
-    //   await this.page.getByLabel("Number").fill(record.Number);
-    // }
+    if (record.Type) {
+     // await this.page.getByLabel('Type').nth(1).selectOption(record.Type);
+      await this.page.locator("(//label[text()='Type']//following::input)[1]").click();
+      await this.page.locator("//li[text()='"+record.Type+"']").click();
+      await this.page.waitForTimeout(3000);
+    }
+    if(record.AreaCode){
+      const ac=parseInt(record.AreaCode);
+      await this.page.getByLabel("Area Code").fill(ac.toString());
+    }
+    if(record.Number){
+      const num=parseInt(record.Number);
+      await this.page.getByLabel("Number").fill(num.toString());
+    }
    console.log("hireEmployee_CommunicationInfo executed");
   }
   async hireEmployee_Addresses(record: DatasetRow)
   {
  
     if (record.Country) {
-      await this.page.locator("(//label[text()='Country']//following::input[@placeholder='Select a value'])[1]").type(record.Country,{delay:200});
-      await this.page.locator("(//label[text()='Country']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+      await this.page.getByLabel("Country").nth(1).clear();
+      await this.page.getByLabel("Country").nth(1).type(record.Country,{delay:300});
+      await this.page.getByLabel("Country").nth(1).press('Enter');
+      await this.page.waitForTimeout(3000);
     }
     if (record.Type1) {
       await this.page.locator("(//label[text()='Type']//following::input)[1]").click();
@@ -181,11 +179,12 @@ export class CoreHrResuableFunctions {
       await this.page.getByLabel("Address Line 1").fill(str);
     }
     if (record.ZIPCode) {
-      const zip=String(record.ZIPCode);
-      await this.page.locator("(//label[text()='ZIP Code']//following::input[@placeholder='Select a value'])[1]").type(zip,{delay:200});
+      const zip=parseInt(record.ZIPCode);
+      await this.page.getByLabel("Postal Code").clear();
+      await this.page.getByLabel("Postal Code").type(zip.toString(),{delay:300});
+      await this.page.getByLabel("Postal Code").press('Enter');
       await this.page.waitForTimeout(3000);
-      await this.page.locator("(//span[text()='"+zip+"'])[1]").click();
-      await this.page.waitForTimeout(3000);
+      
     }
     console.log("hireEmployee_Addresses executed");
   }
@@ -206,12 +205,7 @@ export class CoreHrResuableFunctions {
   async hireEmployee_VisasAndPermits(record: DatasetRow)
   {
     
-    // if (record.IssuingCountry) {
-    //   await this.page.locator("(//label[text()='Issuing Country']//following::input[@placeholder='Select a value'])[1]").type(record.IssuingCountry,{delay:200});
-      
-    //   await this.page.locator("(//label[text()='Issuing Country']//following::input[@placeholder='Select a value'])[1]").press('Enter');
-      
-    // }
+   
     console.log("hireEmployee_VisasAndPermits executed");
 
   }
@@ -220,45 +214,66 @@ export class CoreHrResuableFunctions {
   {
     console.log("hireEmployee_FamilyAndEmergencyContacts executed");
   }
+   async hireEmployee_PassportInfo(record: DatasetRow)
+  {
+   
+    console.log("hireEmployee_PassportInfo executed");
+
+  }
+  async hireEmployee_DriversLicenses(record: DatasetRow)
+  {
+   
+    console.log("hireEmployee_Driver's Licenses executed");
+
+  }
   async hireEmployee_EmploymentDetails(record: DatasetRow)
   {
       await this.page.waitForTimeout(3000); 
-    if (record.AssignmentCountry) {
-      await this.page.locator("(//label[text()='Assignment Country']//following::input[@placeholder='Select a value'])[1]").type(record.AssignmentCountry,{delay:200});
-      await this.page.waitForTimeout(3000); 
-      await this.page.locator("(//label[text()='Assignment Country']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+    if (record.BusinessUnit) {
+      await this.page.getByLabel("Business Unit").nth(1).type(record.BusinessUnit,{delay:200});
+      await this.page.getByLabel("Business Unit").nth(1).press('Enter');
+      // await this.page.locator("(//label[text()='Business Unit']//following::input[@placeholder='Select a value'])[1]").type(record.BusinessUnit,{delay:200});
+      // await this.page.waitForTimeout(3000); 
+      // await this.page.locator("(//label[text()='Business Unit']//following::input[@placeholder='Select a value'])[1]").press('Enter');
     }
     if (record.Job) {
-      await this.page.waitForTimeout(3000);
-      await this.page.locator("(//label[text()='Job']//following::input[@placeholder='Select a value'])[1]").type(record.Job,{delay:200});
-      await this.page.waitForTimeout(3000); 
-      await this.page.locator("(//label[text()='Job']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+      await this.page.getByLabel("Job").nth(0).type(record.Job,{delay:200});
+      await this.page.getByLabel("Job").nth(0).press('Enter');
+      // await this.page.waitForTimeout(3000);
+      // await this.page.locator("(//label[text()='Job']//following::input[@placeholder='Select a value'])[1]").type(record.Job,{delay:200});
+      // await this.page.waitForTimeout(3000); 
+      // await this.page.locator("(//label[text()='Job']//following::input[@placeholder='Select a value'])[1]").press('Enter');
     }
     if (record.Grade) {
-      await this.page.waitForTimeout(3000);
-      await this.page.locator("(//label[text()='Grade']//following::input[@placeholder='Select a value'])[1]").type(record.Grade,{delay:200});
-      await this.page.waitForTimeout(3000); 
-      await this.page.locator("(//label[text()='Grade']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+      await this.page.getByLabel("Grade").nth(0).type(record.Grade,{delay:200});
+      await this.page.getByLabel("Grade").nth(0).press('Enter');
+      // await this.page.waitForTimeout(3000);
+      // await this.page.locator("(//label[text()='Grade']//following::input[@placeholder='Select a value'])[1]").type(record.Grade,{delay:200});
+      // await this.page.waitForTimeout(3000); 
+      // await this.page.locator("(//label[text()='Grade']//following::input[@placeholder='Select a value'])[1]").press('Enter');
     }
     if (record.Location) {
-      await this.page.waitForTimeout(3000);
-      await this.page.locator("(//label[text()='Location']//following::input[@placeholder='Select a value'])[1]").type(record.Location,{delay:200});
-      await this.page.waitForTimeout(3000); 
-      await this.page.locator("(//label[text()='Location']//following::input[@placeholder='Select a value'])[1]").press('Enter');
+      await this.page.getByLabel("Location").nth(0).type(record.Location,{delay:200});
+      await this.page.getByLabel("Location").nth(0).press('Enter');
+      // await this.page.waitForTimeout(3000);
+      // await this.page.locator("(//label[text()='Location']//following::input[@placeholder='Select a value'])[1]").type(record.Location,{delay:200});
+      // await this.page.waitForTimeout(3000); 
+      // await this.page.locator("(//label[text()='Location']//following::input[@placeholder='Select a value'])[1]").press('Enter');
     }
     if (record.CumminsAssignmentStatus) {
       await this.page.waitForTimeout(3000);
-      await this.page.locator("(//label[text()='Cummins Assignment Status']//following::input)[1]").type(record.CumminsAssignmentStatus,{delay:200});
+      await this.page.locator("(//label[text()='Assignment Status']//following::input)[1]").selectOption(record.CumminsAssignmentStatus);
       await this.page.waitForTimeout(3000); 
-      await this.page.locator("(//label[text()='Cummins Assignment Status']//following::input)[1]").press('Enter');
+      //await this.page.locator("(//label[text()='Assignment Status']//following::input)[1]").press('Enter');
     }
     console.log("hireEmployee_EmploymentDetails executed");
   }
 
   async hireEmployee_AssignManagers(record: DatasetRow)
   {
-    await this.page.locator("(//span[text()='Add'])[1]").click();
+    
     if (record.Name) {
+      await this.page.locator("(//span[text()='Add'])[1]").click();
       await this.page.waitForTimeout(3000);
       await this.page.locator("(//label[text()='Name']//following::input[@placeholder='Select a value'])[1]").type(record.Name,{delay:200});
       await this.page.waitForTimeout(3000); 
@@ -269,6 +284,13 @@ export class CoreHrResuableFunctions {
       await this.page.waitForTimeout(3000);
       await this.page.locator("//li[text()='"+record.Type2+"']").click();
     }
+    console.log("hireEmployee_AssignManagers executed");
+  }
+  async hireEmployee_WorkRelationshipInfo(record: DatasetRow)
+  {
+   
+    console.log("hireEmployee_WorkRelationshipInfo executed");
+
   }
   async hireEmployee_PayrollDetails(record: DatasetRow)
   {
@@ -291,8 +313,6 @@ export class CoreHrResuableFunctions {
   async hireEmployee_Submit()
   {
       await this.page.locator("//span[text()='Sub']").click();
-    await this.page.waitForTimeout(30000);
-    await this.page.waitForTimeout(30000);
     await this.page.waitForTimeout(30000);
     console.log("hireEmployee_Submit executed");
 
