@@ -92,7 +92,7 @@ class CommonFunctions {
 
   async navigateToItemFromHomePage(menuItem1: string, menuItem2: string) {
     Keyword_Library.SetPage(this.page);
-
+    await this.page.waitForTimeout(5000);
     await this.page.getByLabel("Home").click();
     await this.page.locator("//a[text()='"+menuItem1+"']").click();
     await this.page.waitForTimeout(2000);
