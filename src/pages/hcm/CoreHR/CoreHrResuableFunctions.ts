@@ -8,6 +8,7 @@ import { CommonFunctions } from "../../common/CommonFunctions";
       const LastNum = Math.floor(Math.random() * 100);
       const Last_Name=Test+"_"+LastNum;
       const Employee=Last_Name+", "+First_Name;
+      console.log("Employee Name is: " + Employee);
       const EmployeeName=Employee;
       
 export class CoreHrResuableFunctions {

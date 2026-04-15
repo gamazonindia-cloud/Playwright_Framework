@@ -3,7 +3,7 @@ import { ExcelDataValidator } from "../../../../utils/excelDataValidator";
 import * as path from "path";
 import { CommonFunctions } from "../../../../src/pages/common/CommonFunctions";
 import { CoreHrResuableFunctions } from "../../../../src/pages/hcm/CoreHR/CoreHrResuableFunctions";
-test.only("Hire an Employee", async ({ page }) => {
+test("Hire an Employee", async ({ page }) => {
   test.setTimeout(1200000);
   const excelPath = path.join(__dirname, "/HireAnEmployeeTestData.xlsx");
 

@@ -14,7 +14,9 @@ test("Terminate an Employee", async ({ page }) => {
   const hireEmployee_ReusableFunction=new CoreHrResuableFunctions(page);
   await page.setDefaultTimeout(120000);
   await commonFunctions.login(firstRecord);
-  await commonFunctions.navigateToItemFromHomePage("My Client Groups", "Terminate Employment");
+  await commonFunctions.navigateToItemFromHomePage("My Client Groups", "Person Management");
+  await hireEmployee_ReusableFunction.hireEmployee_PersonManagement(firstRecord);
+  await hireEmployee_ReusableFunction.hireEmployee_OpneEmployee();
   await hireEmployee_ReusableFunction.SearchTerminateEmployment();
   await hireEmployee_ReusableFunction.TerminateEmployment(firstRecord);
   await hireEmployee_ReusableFunction.hireEmployee_ToBeVisibleContinue();
