@@ -7,6 +7,13 @@ export class FixedAssetResuableFunctions {
   constructor(private page: Page) {}
   public commonFunctions = new CommonFunctions(this.page);
 
+  async changeBook(record: DatasetRow) {
+    if (record.changeBook) {
+      await this.page.getByLabel("Select Book").click();
+      await this.page.getByRole(record.changeBook).click();
+      await this.page.waitForTimeout(5000);
+    }
+  }  
   async addAsset(record: DatasetRow) {
     if (record.Book) {
       await this.page.selectOption("//label[text()='Book']", record.Book);

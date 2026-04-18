@@ -9,7 +9,7 @@ import { CommonFunctions } from "../../common/CommonFunctions";
       const Last_Name=Test+"_"+LastNum;
       const Employee=Last_Name+", "+First_Name;
       console.log("Employee Name is: " + Employee);
-      const EmployeeName=Employee;
+      const EmployeeName="Test_30, Test_90";
       
 export class CoreHrResuableFunctions {
   constructor(private page: Page) {}
@@ -83,8 +83,8 @@ export class CoreHrResuableFunctions {
       
     }
     if(record.LegalEmployer) {
-      await this.page.waitForTimeout(3000);
-      await this.page.getByLabel("Legal Employer").nth(1).type(record.LegalEmployer,{delay:200});
+      await this.page.waitForLoadState("networkidle");
+      await this.page.getByLabel("Legal Employer").nth(1).type(record.LegalEmployer,{delay:100});
       await this.page.getByLabel("Legal Employer").nth(1).press('Enter');
     }
   }
@@ -132,8 +132,7 @@ export class CoreHrResuableFunctions {
     if (record.Country) {
 
       await this.page.getByLabel("Country").nth(1).clear();
-      await this.page.getByLabel("Country").nth(1).type(record.Country,{delay:300});
-      await this.page.waitForTimeout(3000);
+      await this.page.getByLabel("Country").nth(1).type(record.Country,{delay:100});
       await this.page.getByLabel("Country").nth(1).press('Enter');
       
     }
@@ -145,7 +144,7 @@ export class CoreHrResuableFunctions {
     if (record.Type) {
       await this.page.locator("(//label[text()='Type']//following::input)[1]").click();
       await this.page.locator("//li[text()='"+record.Type+"']").click();
-      await this.page.waitForTimeout(3000);
+      
     }
     if(record.AreaCode){
       const ac=parseInt(record.AreaCode);
@@ -162,9 +161,9 @@ export class CoreHrResuableFunctions {
  
     if (record.Country) {
       await this.page.getByLabel("Country").nth(1).clear();
-      await this.page.getByLabel("Country").nth(1).type(record.Country,{delay:300});
+      await this.page.getByLabel("Country").nth(1).type(record.Country,{delay:100});
       await this.page.getByLabel("Country").nth(1).press('Enter');
-      await this.page.waitForTimeout(3000);
+      await this.page.waitForLoadState("networkidle");
     }
     if (record.Type1) {
       await this.page.locator("(//label[text()='Type']//following::input)[1]").click();
@@ -180,9 +179,9 @@ export class CoreHrResuableFunctions {
     if (record.ZIPCode) {
       const zip=parseInt(record.ZIPCode);
       await this.page.getByLabel("Postal Code").clear();
-      await this.page.getByLabel("Postal Code").type(zip.toString(),{delay:300});
+      await this.page.getByLabel("Postal Code").type(zip.toString(),{delay:100});
       await this.page.getByLabel("Postal Code").press('Enter');
-      await this.page.waitForTimeout(3000);
+      await this.page.waitForLoadState("networkidle");
       
     }
     console.log("hireEmployee_Addresses executed");
@@ -226,32 +225,31 @@ export class CoreHrResuableFunctions {
 
   }
   async hireEmployee_EmploymentDetails(record: DatasetRow)
-  {
-      await this.page.waitForTimeout(3000); 
+  { 
     if (record.BusinessUnit) {
       await this.page.getByLabel("Business Unit").nth(1).type(record.BusinessUnit,{delay:200});
       await this.page.getByLabel("Business Unit").nth(1).press('Enter');
-      await this.page.waitForTimeout(3000); 
+     
     }
     if (record.Job) {
-      await this.page.getByLabel("Job").nth(0).type(record.Job,{delay:200});
+      await this.page.getByLabel("Job").nth(0).type(record.Job,{delay:100});
       await this.page.getByLabel("Job").nth(0).press('Enter');
       
     }
     if (record.Grade) {
-      await this.page.getByLabel("Grade").nth(0).type(record.Grade,{delay:200});
+      await this.page.getByLabel("Grade").nth(0).type(record.Grade,{delay:100});
       await this.page.getByLabel("Grade").nth(0).press('Enter');
       
     }
     if (record.Location) {
-      await this.page.getByLabel("Location").nth(0).type(record.Location,{delay:200});
+      await this.page.getByLabel("Location").nth(0).type(record.Location,{delay:100});
       await this.page.getByLabel("Location").nth(0).press('Enter');
      
     }
     if (record.AssignmentStatus) {
-      await this.page.waitForTimeout(3000);
+      await this.page.waitForLoadState("networkidle");
       await this.page.locator("(//label[text()='Assignment Status']//following::input)[1]").selectOption(record.CumminsAssignmentStatus);
-      await this.page.waitForTimeout(3000);  
+      
     }
     console.log("hireEmployee_EmploymentDetails executed");
   }
@@ -295,7 +293,7 @@ export class CoreHrResuableFunctions {
   async hireEmployee_Submit()
   {
       await this.page.locator("//span[text()='Sub']").click();
-    await this.page.waitForTimeout(30000);
+      await this.page.waitForLoadState("networkidle");
     console.log("hireEmployee_Submit executed");
 
       }
@@ -308,18 +306,18 @@ export class CoreHrResuableFunctions {
         await this.page.locator("//label[text()='Include terminated work relationships']").click();
       }
       await this.page.locator("//button[text()='Search']").click();
-      await this.page.waitForTimeout(2000);
+      await this.page.waitForLoadState("networkidle");
     console.log("hireEmployee_PersonManagement executed");
   }
   async hireEmployee_OpneEmployee()
   {
       await this.page.locator("//a[text()='"+EmployeeName+"']").click();
-      await this.page.waitForTimeout(5000);
+      await this.page.waitForLoadState("networkidle");
     console.log("hireEmployee_OpneEmployee executed");
   }
   async hireEmployee_ValidateEmployee()
   {
-      const emp = await this.page.getByLabel("Hire").isVisible();
+      const emp = await this.page.getByLabel("Work Relationship").isVisible();
       if (emp) {
         console.log("Employee is visible");
       } else {

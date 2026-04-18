@@ -41,6 +41,7 @@ class CommonFunctions {
    
     Keyword_Library.SetPage(this.page);
     await Keyword_Library.OpenBrowser({ url: config.baseURL });
+    await this.page.waitForLoadState("networkidle");
     await Keyword_Library.Web_TypeByText({
       label: "Username",
       value: `${record.UserName}`,
@@ -58,17 +59,19 @@ class CommonFunctions {
       partial: true,
       index: 0,
     });
+    await this.page.waitForLoadState("networkidle");
     await Keyword_Library.Web_ClickByText({
       label: "Try another way",
       partial: true,
       index: 0,
     });
+    await this.page.waitForLoadState("networkidle");
     await Keyword_Library.Web_ClickByText({
       label: "Bypass Code",
       partial: true,
       index: 0,
     });
-
+    await this.page.waitForLoadState("networkidle");
     const code=parseInt(record.bypasscode);
     await this.page.locator("//oj-idaas-custom-text[text()='Enter the bypass code.']/following::input").fill(code.toString());
 
@@ -84,6 +87,7 @@ class CommonFunctions {
 
     await this.page.getByLabel("Navigator").click();
     await Keyword_Library.Web_ClickByText({label: "Show More",partial: true,index: 0,});
+    await this.page.waitForTimeout(3000);
     const menu1Locator = this.page.locator(
       `//div/span[text()='${menuItem1}']/following::span[text()='${menuItem2}']`
     );
@@ -91,13 +95,15 @@ class CommonFunctions {
   }
 
   async navigateToItemFromHomePage(menuItem1: string, menuItem2: string) {
+    await this.page.waitForLoadState("networkidle");
     Keyword_Library.SetPage(this.page);
-    await this.page.waitForTimeout(5000);
     await this.page.getByLabel("Home").click();
     await this.page.locator("//a[text()='"+menuItem1+"']").click();
-    await this.page.waitForTimeout(2000);
+    await this.page.waitForLoadState("networkidle");
     await this.page.locator("(//a[text()='"+menuItem2+"'])[1]").click();
+    await this.page.waitForLoadState("networkidle");
   }
+
   async navigateToItemFromHomePageShowMore(menuItem1: string, menuItem2: string) {
     Keyword_Library.SetPage(this.page);
 

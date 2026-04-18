@@ -6,14 +6,15 @@ import { FixedAssetResuableFunctions } from "../../../../src/pages/finance/FA/Fi
 
 test("Add an Asset", async ({ page }) => {
   const excelPath = path.join(__dirname, "/AddAnAssetTestData.xlsx");
-
+  await page.setDefaultTimeout(120000);
   // Fetch only enabled datasets
   const enabledDatasets = ExcelDataValidator.getEnabledDatasets(excelPath);
   const firstRecord = enabledDatasets[0];
   const commonFunctions = new CommonFunctions(page);
   const fixedAssetFunctions = new FixedAssetResuableFunctions(page);
-  await commonFunctions.login(firstRecord);
+  await commonFunctions.loginWithPasscode(firstRecord);
   await commonFunctions.navigateToMenuItem("Fixed Assets", "Assets");
+  await fixedAssetFunctions.changeBook(firstRecord);
    await commonFunctions.selectTastkFromTasksPanel("Transactions", "Add Asset");
    await fixedAssetFunctions.addAsset(firstRecord);
    await fixedAssetFunctions.addAssetDescriptiveDetails(firstRecord);
