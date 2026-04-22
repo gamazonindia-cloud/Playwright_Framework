@@ -5,7 +5,7 @@ import { CommonFunctions } from "../../common/CommonFunctions";
       const Test="Test";
       const Number = Math.floor(Math.random() * 10000);
       const Project_Name=Test+"_"+Number;
-      const ProjectNumber= Number;
+      const ProjectNumber = "7373";
       console.log("Project Name is "+Project_Name);
       console.log("Project Number is "+ProjectNumber);
 
@@ -84,7 +84,29 @@ export class CreateProject {
         else{
           console.log("Project creation failed...");
         }
+    } 
+    async ProjectClassifications(record: DatasetRow) {
+      await this.page.getByLabel("Edit").nth(1).click();
+      await this.page.getByLabel("Add").nth(0).click();
+      await this.page.locator("//span[text()='Class Category']//following::select").nth(0).selectOption(record.ClassCategory);
+      await this.page.locator("(//span[text()='Class Code']//following::input)[3]").type(record.ClassCode);
+      await this.page.locator("(//span[text()='Class Code']//following::input)[3]").press("Enter");
+      await this.page.getByRole('button', { name: 'Save and Close' }).click();
+      
+    }   
+    async ChangeProjectStatus(record: DatasetRow) {
+      await this.page.click("text=Change Status");
+      await this.page.getByLabel("To").selectOption(record.ProjectStatus);
+      await this.page.getByRole('button', { name: 'Save and Close' }).click();
+      const Status = await this.page.getByText(record.ProjectStatus).isVisible();
+      await console.log("Project Status visible is "+Status);
+      if(Status){
+        console.log("Project Status changed successfully...");
       }
+        else{
+          console.log("Project Status change failed...");
+        }
+      }  
     
 
    
