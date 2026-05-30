@@ -295,6 +295,11 @@ export class CoreHrResuableFunctions {
       await this.page.locator("//span[text()='Sub']").click();
       await this.page.waitForLoadState("networkidle");
     console.log("hireEmployee_Submit executed");
+    
+      const yesButton = this.page.locator('text=Yes');
+    if (await yesButton.isVisible()) {
+      await yesButton.click();
+}
 
       }
   async hireEmployee_PersonManagement(record:DatasetRow)

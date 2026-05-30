@@ -14,6 +14,7 @@ export class CreateProject {
   public commonFunctions = new CommonFunctions(this.page);
 
   async createProjectFromTemplate(firstRecord: DatasetRow) {
+    
     await this.page.getByAltText("Create").click();
 
     await this.page.waitForTimeout(3000);
@@ -85,20 +86,25 @@ export class CreateProject {
           console.log("Project creation failed...");
         }
     } 
-    async ProjectClassifications(record: DatasetRow) {
-      await this.page.getByLabel("Edit").nth(1).click();
-      await this.page.getByLabel("Add").nth(0).click();
-      await this.page.locator("//span[text()='Class Category']//following::select").nth(0).selectOption(record.ClassCategory);
-      await this.page.locator("(//span[text()='Class Code']//following::input)[3]").type(record.ClassCode);
+    async ProjectClassifications(firstRecord: DatasetRow) {
+      await this.page.getByRole('button', { name: 'Edit' }).nth(1).click();
+      await this.page.getByAltText("Add").click();
+      await this.page.waitForLoadState("networkidle");
+      await this.page.locator("//span[text()='Class Category']//following::select").click();
+      await this.page.waitForLoadState("networkidle");
+      await console.log("Class Category is "+firstRecord.CategoryName);
+      await console.log("Class Category is "+firstRecord.ClassCode);
+      await this.page.locator("//span[text()='Class Category']//following::option[text()='"+firstRecord.CategoryName+"']").click();
+      await this.page.locator("(//span[text()='Class Code']//following::input)[3]").type(firstRecord.ClassCode);
       await this.page.locator("(//span[text()='Class Code']//following::input)[3]").press("Enter");
       await this.page.getByRole('button', { name: 'Save and Close' }).click();
       
     }   
-    async ChangeProjectStatus(record: DatasetRow) {
+    async ChangeProjectStatus(firstRecord: DatasetRow) {
       await this.page.click("text=Change Status");
-      await this.page.getByLabel("To").selectOption(record.ProjectStatus);
+      await this.page.getByLabel("To").selectOption(firstRecord.ProjectStatus);
       await this.page.getByRole('button', { name: 'Save and Close' }).click();
-      const Status = await this.page.getByText(record.ProjectStatus).isVisible();
+      const Status = await this.page.getByText(firstRecord.ProjectStatus).isVisible();
       await console.log("Project Status visible is "+Status);
       if(Status){
         console.log("Project Status changed successfully...");

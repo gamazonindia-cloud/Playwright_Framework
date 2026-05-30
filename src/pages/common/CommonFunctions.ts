@@ -117,9 +117,8 @@ class CommonFunctions {
   async selectTastkFromTasksPanel(parantTask: string, childTask: string) {
     Keyword_Library.SetPage(this.page);
     await this.page.locator("//img[@alt='Tasks']").click();
-
-    const taskLocatorXpath = `//div[//span[text()="${parantTask}"]]//*[text()="${childTask}"]`;
-    console.log(`Task Locator Xpath: ${taskLocatorXpath}`);
+    const taskLocatorXpath = `//*[text()='${parantTask}']/following::a[text()='${childTask}']`;
+    //console.log(`Task Locator Xpath: ${taskLocatorXpath}`);
     const taskLocator = this.page.locator(taskLocatorXpath);
     await taskLocator.waitFor({ state: "visible", timeout: 30000 });
     await taskLocator.click();

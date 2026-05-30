@@ -4,7 +4,7 @@ import * as path from "path";
 import { CommonFunctions } from "../../../../src/pages/common/CommonFunctions";
 import { CreateProject } from "../../../../src/pages/finance/Project/CreateProject";
 test("Create a Project From Template", async ({ page }) => {
-  test.setTimeout(500000);
+  //.setTimeout(500000);
   const excelPath = path.join(__dirname, "/Create a Project From TemplateData.xlsx");
 
   // Fetch only enabled datasets
