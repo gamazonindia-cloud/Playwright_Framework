@@ -1,178 +1,240 @@
 import { Page } from "@playwright/test";
-import { format as DateFormat} from "date-fns";
-import Keyword_Library, { highlight } from "../../keywords/FusionKeywords";
+import { format as DateFormat } from "date-fns";
+import Keyword_Library from "../../keywords/FusionKeywords";
 import { DatasetRow } from "../../../utils/excelDataValidator";
-import { format } from "path/win32";
+import { HealEngine } from "../../../utils/HealEngine";
+import dotenv from "dotenv";
 
-
+dotenv.config();
 
 const config = require("./config.dev.global.js");
 
 class CommonFunctions {
   private page: Page;
+  private heal: HealEngine;
 
   constructor(page: Page) {
     this.page = page;
+    this.heal = new HealEngine(page);
   }
 
   async login(record: DatasetRow) {
-   
     Keyword_Library.SetPage(this.page);
-    await Keyword_Library.OpenBrowser({ url: config.baseURL });
-    await Keyword_Library.Web_TypeByText({
-      label: "User ID",
-      value: `${record.UserName}`,
-      partial: false,
-      index: 0,
-    });
-    await Keyword_Library.Web_TypeByText({
-      label: "Password",
-      value: `${record.Password}`,
-      partial: false,
-      index: 0,
-    });
-    await Keyword_Library.Web_ClickByText({
-      label: "Sign In",
-      partial: true,
-      index: 1,
-    });
-  }
-  async loginWithPasscode(record: DatasetRow) {
-   
-    Keyword_Library.SetPage(this.page);
-    await Keyword_Library.OpenBrowser({ url: config.baseURL });
-    await this.page.waitForLoadState("networkidle");
-    await Keyword_Library.Web_TypeByText({
-      label: "Username",
-      value: `${record.UserName}`,
-      partial: false,
-      index: 0,
-    });
-    await Keyword_Library.Web_TypeByText({
-      label: "Password",
-      value: `${record.Password}`,
-      partial: false,
-      index: 0,
-    });
-    await Keyword_Library.Web_ClickByText({
-      label: "Next",
-      partial: true,
-      index: 0,
-    });
-    await this.page.waitForLoadState("networkidle");
-    await Keyword_Library.Web_ClickByText({
-      label: "Try another way",
-      partial: true,
-      index: 0,
-    });
-    await this.page.waitForLoadState("networkidle");
-    await Keyword_Library.Web_ClickByText({
-      label: "Bypass Code",
-      partial: true,
-      index: 0,
-    });
-    await this.page.waitForLoadState("networkidle");
-    const code=parseInt(record.bypasscode);
-    await this.page.locator("//oj-idaas-custom-text[text()='Enter the bypass code.']/following::input").fill(code.toString());
 
-    await Keyword_Library.Web_ClickByText({
-      label: "Verify",
-      partial: true,
-      index: 0,
-      });
+    await Keyword_Library.OpenBrowser({ url: config.baseURL });
+    await this.page.waitForLoadState("domcontentloaded");
+
+    await this.heal.fill(
+      'input:visible',
+      "Username",
+      `${record.UserName}`
+    );
+
+    await this.heal.fill(
+      'input[type="password"]:visible',
+      "Password",
+      `${record.Password}`
+    );
+
+    await this.heal.click(
+      'button:has-text("Next")',
+      "Next"
+    );
+  }
+
+  async loginWithPasscode(record: DatasetRow) {
+    Keyword_Library.SetPage(this.page);
+
+    await Keyword_Library.OpenBrowser({ url: config.baseURL });
+    await this.page.waitForLoadState("domcontentloaded");
+
+    await this.heal.fill(
+      'input:visible',
+      "Username",
+      `${record.UserName}`
+    );
+
+    await this.heal.fill(
+      'input[type="password"]:visible',
+      "Password",
+      `${record.Password}`
+    );
+
+    await this.heal.click(
+      'button:has-text("Next")',
+      "Next"
+    );
+
+    await this.page.waitForLoadState("domcontentloaded");
+
+    await this.heal.waitAndClick(
+      'text="Try another way"',
+      "Try another way"
+    );
+
+    await this.heal.waitAndClick(
+      'text="Bypass Code"',
+      "Bypass Code"
+    );
+
+    await this.heal.fill(
+      'input[type="text"]:visible, input[type="tel"]:visible, input[type="number"]:visible',
+      "Bypass code",
+      `${record.bypasscode}`
+    );
+
+    await this.heal.click(
+      'button:has-text("Verify")',
+      "Verify"
+    );
   }
 
   async navigateToMenuItem(menuItem1: string, menuItem2: string) {
     Keyword_Library.SetPage(this.page);
 
-    await this.page.getByLabel("Navigator").click();
-    await Keyword_Library.Web_ClickByText({label: "Show More",partial: true,index: 0,});
-    await this.page.waitForTimeout(3000);
-    const menu1Locator = this.page.locator(
-      `//div/span[text()='${menuItem1}']/following::span[text()='${menuItem2}']`
+    await this.heal.click(
+      '[aria-label="Navigator"]',
+      "Navigator"
     );
-    await menu1Locator.click();
+
+    await this.heal.click(
+      'text=Show More',
+      "Show More"
+    );
+
+    await this.page.waitForTimeout(3000);
+
+    await this.heal.click(
+      `//div/span[text()='${menuItem1}']/following::span[text()='${menuItem2}']`,
+      menuItem2
+    );
   }
 
   async navigateToItemFromHomePage(menuItem1: string, menuItem2: string) {
-    await this.page.waitForLoadState("networkidle");
     Keyword_Library.SetPage(this.page);
-    await this.page.getByLabel("Home").click();
-    await this.page.locator("//a[text()='"+menuItem1+"']").click();
-    await this.page.waitForLoadState("networkidle");
-    await this.page.locator("(//a[text()='"+menuItem2+"'])[1]").click();
-    await this.page.waitForLoadState("networkidle");
+
+    await this.page.waitForLoadState("domcontentloaded");
+
+    await this.heal.click(
+      '[aria-label="Home"]',
+      "Home"
+    );
+
+    await this.heal.click(
+      `//a[text()='${menuItem1}']`,
+      menuItem1
+    );
+
+    await this.page.waitForLoadState("domcontentloaded");
+
+    await this.heal.click(
+      `(//a[text()='${menuItem2}'])[1]`,
+      menuItem2
+    );
   }
 
   async navigateToItemFromHomePageShowMore(menuItem1: string, menuItem2: string) {
     Keyword_Library.SetPage(this.page);
 
-    await this.page.getByLabel("Home").click();
-    await this.page.locator("//a[text()='"+menuItem1+"']").click();
-    await this.page.waitForTimeout(2000);
-    await this.page.locator("(//a[text()='Show More'])[3]").click();
-    await this.page.waitForTimeout(2000);
-    await this.page.locator("(//a[text()='"+menuItem2+"'])[2]").click();
-  }
-  async selectTastkFromTasksPanel(parantTask: string, childTask: string) {
-    Keyword_Library.SetPage(this.page);
-    await this.page.locator("//img[@alt='Tasks']").click();
-    const taskLocatorXpath = `//*[text()='${parantTask}']/following::a[text()='${childTask}']`;
-    //console.log(`Task Locator Xpath: ${taskLocatorXpath}`);
-    const taskLocator = this.page.locator(taskLocatorXpath);
-    await taskLocator.waitFor({ state: "visible", timeout: 30000 });
-    await taskLocator.click();
-  }
-  
-  async getCurrentDate(format:string) {
-    const today = new Date();
-    //** Date Format example dd/MM/yyyy **//
-    const formattedDate = DateFormat(today, format);
-    console.log(formattedDate);
+    await this.heal.click('[aria-label="Home"]', "Home");
 
+    await this.heal.click(
+      `//a[text()='${menuItem1}']`,
+      menuItem1
+    );
+
+    await this.page.waitForTimeout(2000);
+
+    await this.heal.click(
+      "(//a[text()='Show More'])[3]",
+      "Show More"
+    );
+
+    await this.page.waitForTimeout(2000);
+
+    await this.heal.click(
+      `(//a[text()='${menuItem2}'])[2]`,
+      menuItem2
+    );
   }
-  async splitText(Text:string, Delimiter:string, Index:number) {
-    const TextArray = Text.split(Delimiter);
-    console.log("Split Text Array: ", TextArray[Index]);
-    return TextArray[Index];
+
+  async selectTaskFromTasksPanel(parentTask: string, childTask: string) {
+    Keyword_Library.SetPage(this.page);
+
+    await this.heal.click(
+      "//img[@alt='Tasks']",
+      "Tasks"
+    );
+
+    const taskLocatorXpath = `//*[text()='${parentTask}']/following::a[text()='${childTask}']`;
+
+    await this.heal.waitAndClick(
+      taskLocatorXpath,
+      childTask
+    );
   }
-  async openFilePath(filePath:string) {
-        //** Path Example C:\\Document\\Form.pdf **//
-        const { exec } = require('child_process');
-        const Path = filePath;
-        exec(`start "" "${Path}"`, (err) => {
-        if (err) {
-          console.error('Error opening file:', err);
-        } else {
-          console.log('File opened successfully!');
-        }
+
+  async getCurrentDate(dateFormat: string) {
+    const today = new Date();
+    const formattedDate = DateFormat(today, dateFormat);
+    console.log(formattedDate);
+    return formattedDate;
+  }
+
+  async splitText(text: string, delimiter: string, index: number) {
+    const textArray = text.split(delimiter);
+    console.log("Split Text Array: ", textArray[index]);
+    return textArray[index];
+  }
+
+  async openFilePath(filePath: string) {
+    const { exec } = require("child_process");
+
+    exec(`start "" "${filePath}"`, (err: Error | null) => {
+      if (err) {
+        console.error("Error opening file:", err);
+      } else {
+        console.log("File opened successfully!");
+      }
     });
   }
-  async autoDataGeneration(Length:number, Prefix:string, Suffix:string, Allowuppercase:boolean, Allowlowercase:boolean, Allownumbers:boolean, AllowSpecialChars:boolean) {
-        //** Please Enter your Length **//
-        const length = Length;
-        const prefix = Prefix;
-        const suffix = Suffix;
-        const allowUppercase = Allowuppercase;
-        const allowLowercase = Allowlowercase;
-        const allowNumbers = Allownumbers;
-        const allowSpecialChars = AllowSpecialChars;
-        //** Please Enter your length **//
-        let generatedLength = length - prefix.length - suffix.length;
-        let characters = '';
-        if (allowUppercase) characters += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        if (allowLowercase) characters += 'abcdefghijklmnopqrstuvwxyz';
-        if (allowNumbers) characters += '0123456789';
-        if (allowSpecialChars) characters += '!@#$%^&*()_+~`|}{[]:;?><,./-=';
-        let result = prefix;
 
-        for (let i = 0; i < generatedLength; i++) {
-          const randomIndex = Math.floor(Math.random() * characters.length);
-          result += characters[randomIndex];
-        }
-        result += suffix;
-        //console.log("Generated Data: ", result);
-        return result;
+  async autoDataGeneration(
+    Length: number,
+    Prefix: string,
+    Suffix: string,
+    Allowuppercase: boolean,
+    Allowlowercase: boolean,
+    Allownumbers: boolean,
+    AllowSpecialChars: boolean
+  ) {
+    const generatedLength = Length - Prefix.length - Suffix.length;
+
+    let characters = "";
+
+    if (Allowuppercase) characters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (Allowlowercase) characters += "abcdefghijklmnopqrstuvwxyz";
+    if (Allownumbers) characters += "0123456789";
+    if (AllowSpecialChars) characters += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+
+    if (generatedLength < 0) {
+      throw new Error("Length should be greater than Prefix + Suffix length");
+    }
+
+    if (!characters) {
+      throw new Error("At least one character type should be allowed");
+    }
+
+    let result = Prefix;
+
+    for (let i = 0; i < generatedLength; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      result += characters[randomIndex];
+    }
+
+    result += Suffix;
+
+    return result;
   }
 }
 

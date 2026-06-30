@@ -1,5 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
-
+import dotenv from 'dotenv';
+dotenv.config();
 export default defineConfig({
   testDir: './tests',
   testMatch: ['**/*test.ts', '**/*.spec.ts'],
@@ -13,10 +14,11 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
  
-   reporter: [['list'], ['html', { open: 'never' }], ['allure-playwright']],
+   reporter: [['list'], ['html', { open: 'never' }], ['line'], ['allure-playwright']],
   timeout: 90 * 1000,
    use: {
-     video: 'retain-on-failure',
+    screenshot: 'on',
+    video: 'on',
      headless: !true,
      trace: 'on',
     launchOptions: {

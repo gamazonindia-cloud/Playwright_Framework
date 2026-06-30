@@ -3,7 +3,21 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "allure:pdf": "python -m allure_report_exporter build --results ./allure-results --out ./allure-report-out --format pdf",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "test:regression": "npx playwright test",
+    "test:regression:headed": "npx playwright test --headed",
+    "test : regression": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:headless": "npx playwright test --headed=false",
+    "test:chromium": "npx playwright test --project=chromium",
+    "test:firefox": "npx playwright test --project=firefox",
+    "test:webkit": "npx playwright test --project=webkit",
+    "test:grep": "npx playwright test --grep",
+    "test:debug": "npx playwright test --debug"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,7 +31,9 @@
   },
   "dependencies": {
     "date-fns": "^4.1.0",
+    "dotenv": "^17.4.2",
     "exceljs": "^4.4.0",
+    "healwright": "^1.7.0",
     "openai": "^6.22.0",
     "selenium-webdriver": "^4.40.0",
     "xlsx": "^0.18.5"
