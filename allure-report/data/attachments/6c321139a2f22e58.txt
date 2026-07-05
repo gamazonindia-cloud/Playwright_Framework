@@ -1,8 +1,0 @@
-[OpenBrowser] Navigated to https://fa-epvg-test-saasfaprod1.fa.ocs.oraclecloud.com:443/fscmUI/faces/FuseWelcome
-  │
-  ├─ ⚡ FILL User ID input
-  │
-  ├─ ✕ User ID input
-  │  Healing disabled or API key not set
-  └─────────────────────────────────────────────────
-

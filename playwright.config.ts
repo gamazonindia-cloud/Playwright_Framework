@@ -1,49 +1,71 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
+import { defineBddConfig } from 'playwright-bdd';
 import dotenv from 'dotenv';
+
 dotenv.config();
+
+const bddTestDir = defineBddConfig({
+  paths: ['features/**/*.feature'],
+  require: ['steps/**/*.ts'],
+  importTestFrom: './bddTest.ts',
+});
+
 export default defineConfig({
+
   testDir: './tests',
   testMatch: ['**/*test.ts', '**/*.spec.ts'],
-  /* Run tests in files in parallel */
+
   fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
+
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
+
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
+
   workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
- 
-   reporter: [['list'], ['html', { open: 'never' }], ['line'], ['allure-playwright']],
-  timeout: 90 * 1000,
-   use: {
+
+  reporter: [
+    ['list'],
+    ['html', { open: 'never' }],
+    ['line'],
+    ['allure-playwright']
+  ],
+
+  //timeout: 90 * 1000,
+timeout: 1200000,
+  use: {
     screenshot: 'on',
     video: 'on',
-     headless: !true,
-     trace: 'on',
-    launchOptions: {
-   // args: ['--start-maximized'],
+    trace: 'on',
+    headless: false,
   },
-     
-   },
-   
 
-   
-  /* Configure projects for major browsers */
   projects: [
+
+    // Existing Playwright Tests
     {
       name: 'chromium',
-      use: { 
-        //...devices['Desktop Chrome'],//old code
-          viewport: null,//new added
-      launchOptions: {//new added
-         args: ['--start-maximized'],//new added
+
+      testDir: './tests',
+
+      use: {
+        viewport: null,
+
+        launchOptions: {
+          args: ['--start-maximized'],
+          slowMo: 2000,
         },
       },
-    
-
     },
+
+    // BDD Tests
+    {
+      name: 'bdd-tests',
+
+      testDir: '.features-gen',
+
+      testMatch: '**/*.spec.js',
+    },
+
   ],
-  
-  
+
 });

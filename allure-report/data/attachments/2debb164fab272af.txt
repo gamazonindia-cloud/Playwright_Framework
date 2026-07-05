@@ -1,0 +1,6 @@
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+Employee Name is: Test_25, Test_66
+[OpenBrowser] Navigated to https://fa-epvg-test-saasfaprod1.fa.ocs.oraclecloud.com:443/fscmUI/faces/FuseWelcome  
+Healing fill locator for: Username
+hireEmployee_PersonManagement executed
+hireEmployee_OpneEmployee executed

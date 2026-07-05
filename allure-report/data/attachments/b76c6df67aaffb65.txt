@@ -1,0 +1,6 @@
+◇ injected env (0) from .env // tip: ⌘ suppress logs { quiet: true }
+Employee Name is: Test_29, Test_96
+[OpenBrowser] Navigated to https://fa-epvg-test-saasfaprod1.fa.ocs.oraclecloud.com:443/fscmUI/faces/FuseWelcome  
+Healing fill locator for: Username
+hireEmployee_PersonManagement executed
+hireEmployee_OpneEmployee executed

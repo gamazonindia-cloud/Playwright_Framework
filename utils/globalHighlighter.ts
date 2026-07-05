@@ -25,7 +25,7 @@ element.style.backgroundColor = "rgba(245,130,32,0.15)";
         element.style.border = originalBorder;
         element.style.boxShadow = originalBoxShadow;
         element.style.backgroundColor = originalBackground;
-      }, 2500);
+      }, 4000);
     }
 
     // Highlight Clicks

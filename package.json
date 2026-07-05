@@ -3,32 +3,59 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+
   "scripts": {
     "allure:pdf": "python -m allure_report_exporter build --results ./allure-results --out ./allure-report-out --format pdf",
+
     "allure:generate": "allure generate allure-results --clean -o allure-report",
-    "allure:open": "allure open allure-report",
+
+    "allure:open": "npx http-server allure-report -c-1",
+
+    "allure": "allure generate allure-results --clean -o allure-report && npx http-server allure-report -c-1",
+
+    "bdd:gen": "npx bddgen",
+
+    "bdd": "npx bddgen && npx playwright test --project=bdd-tests",
+
+    "bdd:headed": "npx bddgen && npx playwright test --project=bdd-tests --headed",
+
     "test:regression": "npx playwright test",
+
     "test:regression:headed": "npx playwright test --headed",
-    "test : regression": "npx playwright test",
+
     "test:headed": "npx playwright test --headed",
+
     "test:headless": "npx playwright test --headed=false",
+
     "test:chromium": "npx playwright test --project=chromium",
+
     "test:firefox": "npx playwright test --project=firefox",
+
     "test:webkit": "npx playwright test --project=webkit",
+
     "test:grep": "npx playwright test --grep",
+
     "test:debug": "npx playwright test --debug"
   },
+
   "keywords": [],
+
   "author": "",
+
   "license": "ISC",
+
   "type": "commonjs",
+
   "devDependencies": {
     "@playwright/test": "^1.59.1",
     "@types/node": "^24.12.2",
     "allure-commandline": "^2.36.0",
     "allure-playwright": "^3.4.5",
+    "playwright": "^1.59.1",
+    "playwright-bdd": "^9.2.0",
     "ts-node": "^10.9.2"
   },
+
   "dependencies": {
     "date-fns": "^4.1.0",
     "dotenv": "^17.4.2",
@@ -38,16 +65,20 @@
     "selenium-webdriver": "^4.40.0",
     "xlsx": "^0.18.5"
   },
+
   "directories": {
     "doc": "docs",
     "test": "tests"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nueraqasystem/NueraQA_System_Accelerator.git"
   },
+
   "bugs": {
     "url": "https://github.com/nueraqasystem/NueraQA_System_Accelerator/issues"
   },
+
   "homepage": "https://github.com/nueraqasystem/NueraQA_System_Accelerator#readme"
 }
