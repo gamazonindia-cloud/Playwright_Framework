@@ -1,5 +1,5 @@
 // Generated from: features\HCM\CoreHR\WorkForceModel.feature
-import { test } from "../../../../bddTest.ts";
+import { test } from "../../../../baseTest.ts";
 
 test.describe('Workforce Model', () => {
 
@@ -18,6 +18,8 @@ test.describe('Workforce Model', () => {
 });
 
 // == technical section ==
+
+test.beforeEach('BeforeEach Hooks', ({ $runScenarioHooks, page }) => $runScenarioHooks('before', { page }));
 
 test.use({
   $test: [({}, use) => use(test), { scope: 'test', box: true }],

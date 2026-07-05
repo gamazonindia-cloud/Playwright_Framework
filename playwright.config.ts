@@ -6,8 +6,9 @@ dotenv.config();
 
 const bddTestDir = defineBddConfig({
   paths: ['features/**/*.feature'],
-  require: ['steps/**/*.ts'],
-  importTestFrom: './bddTest.ts',
+  require: ['steps/**/*.ts', 'baseTest.ts'],
+  //require: ['steps/**/*.ts'],
+  //importTestFrom: './bddTest.ts',
 });
 
 export default defineConfig({
@@ -52,7 +53,7 @@ timeout: 1200000,
 
         launchOptions: {
           args: ['--start-maximized'],
-          slowMo: 2000,
+          slowMo: 1000,
         },
       },
     },

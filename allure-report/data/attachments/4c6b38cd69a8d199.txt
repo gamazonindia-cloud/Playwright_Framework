@@ -1,0 +1,9 @@
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+Employee Name is: Test_98, Test_25
+[OpenBrowser] Navigated to https://fa-epvg-test-saasfaprod1.fa.ocs.oraclecloud.com:443/fscmUI/faces/FuseWelcome  
+Healing fill locator for: Username
+Healing click locator for: Home
+Clicked on Contin button
+First Name is: Test_25
+Family Name is: Test_98
+Clicked on Continue button

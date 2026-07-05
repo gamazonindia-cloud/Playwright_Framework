@@ -88,27 +88,48 @@ export class CoreHrResuableFunctions {
       await this.page.getByLabel("Legal Employer").nth(1).press('Enter');
     }
   }
-  async hireEmployee_ToBeVisibleContinue()
-   {
-    const Continue=await this.page.locator("//button[text()='Continue']").isVisible();
-    if (Continue==true) {
-      await expect(this.page.locator("//button[text()='Continue']")).toBeVisible();
-      await this.page.locator("//button[text()='Continue']").click();
-      await this.page.locator("//button[text()='Continue']").waitFor();
-      console.log("Clicked on Continue button");
-      await this.page.waitForLoadState("networkidle");
-      await this.page.waitForTimeout(3000);
-    }
-    else {
-      await expect(this.page.locator("//button[text()='Contin']")).toBeVisible();
-      await this.page.locator("//button[text()='Contin']").click();
-      await this.page.locator("//button[text()='Contin']").waitFor();
-      console.log("Clicked on Contin button");
-      await this.page.waitForLoadState("networkidle");
+  // async hireEmployee_ToBeVisibleContinue()
+  //  {
+  //   const Continue=await this.page.locator("//button[text()='Continue']").isVisible();
+  //   if (Continue==true) {
+  //     await expect(this.page.locator("//button[text()='Continue']")).toBeVisible();
+  //     await this.page.locator("//button[text()='Continue']").click();
+  //     await this.page.locator("//button[text()='Continue']").waitFor();
+  //     console.log("Clicked on Continue button");
+  //     await this.page.waitForLoadState("networkidle");
+  //     await this.page.waitForTimeout(3000);
+  //   }
+  //   else {
+  //     await expect(this.page.locator("//button[text()='Contin']")).toBeVisible();
+  //     await this.page.locator("//button[text()='Contin']").click();
+  //     await this.page.locator("//button[text()='Contin']").waitFor();
+  //     console.log("Clicked on Contin button");
+  //     await this.page.waitForLoadState("networkidle");
      
-       await this.page.waitForTimeout(3000);
-    }
+  //      await this.page.waitForTimeout(3000);
+  //   }
+  // }
+  async hireEmployee_ToBeVisibleContinue() {
+  const Continue = await this.page.locator("//button[text()='Continue']").isVisible();
+  if (Continue == true) {
+    await expect(this.page.locator("//button[text()='Continue']")).toBeVisible();
+    await this.page.locator("//button[text()='Continue']").click();
+    await this.page.locator("//button[text()='Continue']").waitFor();
+    console.log("Clicked on Continue button");
+    await this.page.waitForLoadState("networkidle");
+    await this.page.waitForTimeout(3000);
+  } else {
+    await expect(this.page.locator("//button[text()='Contin']")).toBeVisible();
+    await this.page.locator("//button[text()='Contin']").click();
+    await this.page.locator("//button[text()='Contin']").waitFor();
+    console.log("Clicked on Contin button");
+    await this.page.waitForLoadState("networkidle");
+    await this.page.waitForTimeout(3000);
   }
+
+  // 🆕 Handle conditional Potential Matches popup (appears after some Continue clicks)
+  await this.handlePotentialMatchesPopup();
+}
   async hireEmployee_PersonalDetails(record: DatasetRow)
    {
     
@@ -141,11 +162,19 @@ export class CoreHrResuableFunctions {
   async hireEmployee_CommunicationInfo(record: DatasetRow)
   {
     
-    if (record.Type) {
-      await this.page.locator("(//label[text()='Type']//following::input)[1]").click();
-      await this.page.locator("//li[text()='"+record.Type+"']").click();
-      
-    }
+// Wait for Communication Info section to load
+  await this.page.waitForLoadState("networkidle");
+  await this.page.waitForTimeout(2000);
+
+    
+ if (record.Type) {
+    // More specific locator - the Type dropdown in Communication section
+    const typeInput = this.page.locator("//label[text()='Type']/following::input[1]").first();
+    await typeInput.waitFor({ state: 'visible', timeout: 30000 });
+    await typeInput.click();
+    await this.page.locator(`//li[text()='${record.Type}']`).click();
+  }
+
     if(record.AreaCode){
       const ac=parseInt(record.AreaCode);
       await this.page.getByLabel("Area Code").fill(ac.toString());
@@ -290,12 +319,96 @@ export class CoreHrResuableFunctions {
     }
     console.log("hireEmployee_Salary executed");
   }
+  /**
+ * Handles the "Potential Matches" popup that appears conditionally
+ * during Hire an Employee flow. Oracle shows this when it detects
+ * existing records with similar name/DOB.
+ *
+ * If popup appears → selects "No match, add person" → clicks Continue.
+ * If popup does NOT appear → silently skips, no error.
+ */
+async handlePotentialMatchesPopup(): Promise<void> {
+  try {
+    // Look for the popup by its unique text
+    const popupIndicators = [
+      this.page.locator('text=/Potential Matches/i').first(),
+      this.page.locator('text=/PER-1532260/i').first(),
+      this.page.locator('text=/select the person. Else select no match/i').first(),
+    ];
+
+    let popupVisible = false;
+    for (const indicator of popupIndicators) {
+      if (await indicator.isVisible({ timeout: 3000 }).catch(() => false)) {
+        popupVisible = true;
+        break;
+      }
+    }
+
+    if (!popupVisible) {
+      console.log("ℹ️  No Potential Matches popup — proceeding normally");
+      return;
+    }
+
+    console.log("⚠️  Potential Matches popup detected — selecting 'No match, add person'");
+
+    // Try multiple selector strategies for the radio button
+    const noMatchSelectors = [
+      "//label[contains(normalize-space(),'No match, add person')]",
+      "//span[contains(normalize-space(),'No match, add person')]",
+      "//*[contains(text(),'No match, add person')]",
+    ];
+
+    let clicked = false;
+    for (const sel of noMatchSelectors) {
+      const el = this.page.locator(sel).first();
+      if (await el.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await el.click({ force: true });
+        clicked = true;
+        break;
+      }
+    }
+
+    if (!clicked) {
+      console.log("⚠️  Could not click 'No match' radio — trying first radio button");
+      await this.page.locator("input[type='radio']").first().check({ force: true });
+    }
+
+    await this.page.waitForTimeout(1000);
+
+    // Click Continue on the popup
+    const continueSelectors = [
+      "//button[normalize-space()='Continue']",
+      "//button[contains(normalize-space(),'Continue')]",
+      "//span[normalize-space()='Continue']/ancestor::button",
+    ];
+
+    for (const sel of continueSelectors) {
+      const btn = this.page.locator(sel).first();
+      if (await btn.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await btn.click();
+        break;
+      }
+    }
+
+    await this.page.waitForLoadState("networkidle");
+    await this.page.waitForTimeout(2000);
+    console.log("✅ Potential Matches popup handled successfully");
+
+  } catch (error) {
+    console.log("ℹ️  Potential Matches popup handler completed silently:", (error as Error).message);
+  }
+}
   async hireEmployee_Submit()
   {
       await this.page.locator("//span[text()='Sub']").click();
       await this.page.waitForLoadState("networkidle");
     console.log("hireEmployee_Submit executed");
     
+
+// 🆕 Handle conditional "Potential Matches" popup (appears sometimes)
+  await this.handlePotentialMatchesPopup()
+
+
       const yesButton = this.page.locator('text=Yes');
     if (await yesButton.isVisible()) {
       await yesButton.click();

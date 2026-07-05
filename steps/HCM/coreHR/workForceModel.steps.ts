@@ -1,6 +1,6 @@
 import { createBdd } from "playwright-bdd";
-import { test } from "../../../bddTest";
-
+//import { test } from "../../../bddTest";
+import { test } from "../../../baseTest";
 import { withHealing } from "healwright";
 import * as path from "path";
 import { attachAllureScreenshot } from "../../../utils/allureScreenshotHelper";
@@ -33,9 +33,9 @@ const fileToUpload =
 Given("User logs into Oracle application", async ({ page }) => {
 
   const excelPath = path.join(
-    process.cwd(),
-    "tests/projectWorkSpaceERP/HCM/CoreHR/WorkForceModelTestData.xlsx"
-  );
+  __dirname,
+  "../../../features/HCM/CoreHR/WorkForceModelTestData.xlsx"
+);
 
   const enabledDatasets =
     ExcelDataValidator.getEnabledDatasets(excelPath);

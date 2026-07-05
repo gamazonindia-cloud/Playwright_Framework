@@ -1,6 +1,7 @@
 //import { test, expect } from "@playwright/test";
 
-import { test } from "../../../../baseTest";
+//import { test } from "../../../../baseTest";
+import { legacyTest as test } from "../../../../baseTest";
 import { expect } from "@playwright/test";
 import { withHealing } from "healwright";
 import { ExcelDataValidator } from "../../../../utils/excelDataValidator";
