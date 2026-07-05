@@ -14,8 +14,8 @@ test.only("Work Force Model", async ({ page }, testInfo) => {
 
   const STEP_WAIT = 4000;
   const modelName = `PW_${Date.now()}`;
-  const fileToUpload = "C:/Users/girdh/Downloads/ec6117e5d3a7e19f.webm";
-
+  //const fileToUpload = "C:\Users\10854578\Downloads\Software_Testing_Concepts_Session Deck.pptx";
+  const fileToUpload = "C:\\Users\\10854578\\Downloads\\Software_Testing_Concepts_Session Deck.pptx";
   const enabledDatasets = ExcelDataValidator.getEnabledDatasets(excelPath);
   const firstRecord = enabledDatasets[0];
 

@@ -1,0 +1,31 @@
+[OpenBrowser] Navigated to https://fa-epvg-test-saasfaprod1.fa.ocs.oraclecloud.com:443/fscmUI/faces/FuseWelcome  
+Healing fill locator for: Username
+Healing click locator for: Home
+Clicked on Contin button
+First Name is: Test_79
+Family Name is: Test_68
+Clicked on Continue button
+hireEmployee_CommunicationInfo executed
+Clicked on Contin button
+hireEmployee_Addresses executed
+Clicked on Continue button
+hireEmployee_LegislativeInfo executed
+Clicked on Contin button
+hireEmployee_CitizenshipInfo executed
+Clicked on Contin button
+hireEmployee_PassportInfo executed
+Clicked on Contin button
+hireEmployee_Driver's Licenses executed
+Clicked on Contin button
+hireEmployee_VisasAndPermits executed
+Clicked on Contin button
+hireEmployee_FamilyAndEmergencyContacts executed
+Clicked on Contin button
+hireEmployee_EmploymentDetails executed
+Clicked on Contin button
+hireEmployee_Submit executed
+Healing click locator for: My Client Groups
+hireEmployee_PersonManagement executed
+hireEmployee_OpneEmployee executed
+Employee is visible
+hireEmployee_OpneEmployee executed

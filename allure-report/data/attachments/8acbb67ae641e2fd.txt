@@ -1,0 +1,5 @@
+[OpenBrowser] Navigated to https://fa-epvg-test-saasfaprod1.fa.ocs.oraclecloud.com:443/fscmUI/faces/FuseWelcome  
+Healing fill locator for: Username
+hireEmployee_PersonManagement executed
+hireEmployee_OpneEmployee executed
+Retrying step: File_Uploaded
