@@ -6,3 +6,16 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Allure
+allure-results/
+allure-report/
+allure-report-out/
+
+# Healwright runtime files
+.self-heal/*.json
+.self-heal/*.jsonl

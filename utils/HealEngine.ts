@@ -1,7 +1,16 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { withHealing, HealPage } from "healwright";
 
 export class HealEngine {
-  constructor(private page: Page) {}
+  private healPage: HealPage;
+
+  constructor(private page: Page) {
+    this.healPage = withHealing(page);
+
+    console.log("SELF_HEAL:", process.env.SELF_HEAL);
+    console.log("AI_PROVIDER:", process.env.AI_PROVIDER);
+    console.log("AI_MODEL:", process.env.AI_MODEL);
+  }
 
   private getLocator(selector: string): Locator {
     return this.page.locator(selector).first();
@@ -14,8 +23,6 @@ export class HealEngine {
       this.page.getByLabel(description).first(),
       this.page.getByPlaceholder(description).first(),
       this.page.getByText(description, { exact: false }).first(),
-      this.page.locator(`input:visible`).first(),
-      this.page.locator(`button:visible`).first(),
     ];
 
     for (const locator of candidates) {
@@ -30,35 +37,55 @@ export class HealEngine {
 
   async click(selector: string, description: string) {
     try {
-      const loc = this.getLocator(selector);
-      await expect(loc).toBeVisible({ timeout: 5000 });
-      await loc.click();
+      await this.healPage.heal.click(
+        this.page.locator(selector),
+        description
+      );
     } catch {
-      console.log(`Healing click locator for: ${description}`);
+      console.log(`Fallback healing for: ${description}`);
+
       const healed = await this.findByFallback(description);
       await healed.click();
     }
   }
 
-  async fill(selector: string, description: string, value: string) {
+  async fill(
+    selector: string,
+    description: string,
+    value: string
+  ) {
     try {
-      const loc = this.getLocator(selector);
-      await expect(loc).toBeVisible({ timeout: 5000 });
-      await loc.fill(value);
+      await this.healPage.heal.fill(
+        this.page.locator(selector),
+        description,
+        value
+      );
     } catch {
-      console.log(`Healing fill locator for: ${description}`);
+      console.log(`Fallback healing for: ${description}`);
+
       const healed = await this.findByFallback(description);
       await healed.fill(value);
     }
   }
 
-  async waitAndClick(selector: string, description: string, timeout = 30000) {
+  async waitAndClick(
+    selector: string,
+    description: string,
+    timeout = 30000
+  ) {
     try {
-      const loc = this.getLocator(selector);
-      await expect(loc).toBeVisible({ timeout });
-      await loc.click();
+      await this.page.locator(selector).waitFor({
+        state: "visible",
+        timeout
+      });
+
+      await this.healPage.heal.click(
+        this.page.locator(selector),
+        description
+      );
     } catch {
-      console.log(`Healing waitAndClick locator for: ${description}`);
+      console.log(`Fallback healing for: ${description}`);
+
       const healed = await this.findByFallback(description);
       await healed.click();
     }
