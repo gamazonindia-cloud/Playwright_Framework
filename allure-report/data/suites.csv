@@ -1,4 +1,4 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","67054","Create Workforce Model for an Employee","bdd-tests","2026-07-06","passed","2026-07-06","Workforce Model","..\.features-gen\features\HCM\CoreHR\WorkForceModel.feature.spec.js","",""
 "","184212","Hire an Employee","chromium","2026-07-05","failed","2026-07-05","","projectWorkSpaceERP\HCM\CoreHR\HireAnEmployee.test.ts","",""
-"","116297","Hire an Employee end-to-end flow","bdd-tests","2026-07-06","passed","2026-07-06","Hire an Employee - HCM Core HR","..\.features-gen\features\HCM\CoreHR\HireAnEmployee.feature.spec.js","",""
+"","22303","Create Workforce Model for an Employee","bdd-tests","2026-07-07","failed","2026-07-07","Workforce Model","..\.features-gen\features\HCM\CoreHR\WorkForceModel.feature.spec.js","",""
+"","21858","Hire an Employee end-to-end flow","bdd-tests","2026-07-07","failed","2026-07-07","Hire an Employee - HCM Core HR","..\.features-gen\features\HCM\CoreHR\HireAnEmployee.feature.spec.js","",""

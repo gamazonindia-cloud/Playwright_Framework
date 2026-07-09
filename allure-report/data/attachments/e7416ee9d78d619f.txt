@@ -1,0 +1,4 @@
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+Employee Name is: Test_16, Test_31
+[OpenBrowser] Navigated to https://fa-epvg-test-saasfaprod1.fa.ocs.oraclecloud.com:443/fscmUI/faces/FuseWelcome  
+Healing fill locator for: Username
