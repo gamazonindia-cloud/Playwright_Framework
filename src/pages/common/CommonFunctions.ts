@@ -42,52 +42,96 @@ class CommonFunctions {
     );
   }
 
+  // async loginWithPasscode(record: DatasetRow) {
+  //   Keyword_Library.SetPage(this.page);
+
+  //   await Keyword_Library.OpenBrowser({ url: config.baseURL });
+  //   await this.page.waitForLoadState("domcontentloaded");
+
+  //   await this.heal.fill(
+  //     'input:visible',
+  //     "Username",
+  //     `${record.UserName}`
+  //   );
+
+  //   await this.heal.fill(
+  //     'input[type="password"]:visible',
+  //     "Password",
+  //     `${record.Password}`
+  //   );
+
+  //   await this.heal.click(
+  //     'button:has-text("Next")',
+  //     "Next"
+  //   );
+
+  //   await this.page.waitForLoadState("domcontentloaded");
+
+  //   await this.heal.waitAndClick(
+  //     'text="Try another way"',
+  //     "Try another way"
+  //   );
+
+  //   await this.heal.waitAndClick(
+  //     'text="Bypass Code"',
+  //     "Bypass Code"
+  //   );
+
+  //   await this.heal.fill(
+  //     'input[type="text"]:visible, input[type="tel"]:visible, input[type="number"]:visible',
+  //     "Bypass code",
+  //     `${record.bypasscode}`
+  //   );
+
+  //   await this.heal.click(
+  //     'button:has-text("Verify")',
+  //     "Verify"
+  //   );
+  // }
   async loginWithPasscode(record: DatasetRow) {
-    Keyword_Library.SetPage(this.page);
 
-    await Keyword_Library.OpenBrowser({ url: config.baseURL });
-    await this.page.waitForLoadState("domcontentloaded");
+  Keyword_Library.SetPage(this.page);
 
-    await this.heal.fill(
-      'input:visible',
-      "Username",
-      `${record.UserName}`
-    );
+  await Keyword_Library.OpenBrowser({
+    url: config.baseURL
+  });
 
-    await this.heal.fill(
-      'input[type="password"]:visible',
-      "Password",
-      `${record.Password}`
-    );
+  await this.page.waitForLoadState("domcontentloaded");
 
-    await this.heal.click(
-      'button:has-text("Next")',
-      "Next"
-    );
+  console.log("Username : " + record.UserName);
+  console.log("Password : " + record.Password);
 
-    await this.page.waitForLoadState("domcontentloaded");
+  await this.heal.fill(
+    'input:visible',
+    "Username",
+    `${record.UserName}`
+  );
 
-    await this.heal.waitAndClick(
-      'text="Try another way"',
-      "Try another way"
-    );
+  await this.heal.fill(
+    'input[type="password"]:visible',
+    "Password",
+    `${record.Password}`
+  );
 
-    await this.heal.waitAndClick(
-      'text="Bypass Code"',
-      "Bypass Code"
-    );
+  await this.heal.click(
+    'button:has-text("Next")',
+    "Next"
+  );
 
-    await this.heal.fill(
-      'input[type="text"]:visible, input[type="tel"]:visible, input[type="number"]:visible',
-      "Bypass code",
-      `${record.bypasscode}`
-    );
+  await this.page.waitForTimeout(10000);
 
-    await this.heal.click(
-      'button:has-text("Verify")',
-      "Verify"
-    );
-  }
+  await this.page.screenshot({
+    path: "after_login.png",
+    fullPage: true
+  });
+
+  console.log(
+    "Screenshot captured : after_login.png"
+  );
+
+  return;
+}
+
 
   async navigateToMenuItem(menuItem1: string, menuItem2: string) {
     Keyword_Library.SetPage(this.page);
@@ -124,6 +168,11 @@ class CommonFunctions {
       `//a[text()='${menuItem1}']`,
       menuItem1
     );
+
+   await this.page.screenshot({
+  path: "myclientgroups.png",
+  fullPage: true
+});
 
     await this.page.waitForLoadState("domcontentloaded");
 

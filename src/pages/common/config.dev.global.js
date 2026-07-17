@@ -1,7 +1,8 @@
 module.exports = {
   //baseURL: 'https://ekaw-dev8.fa.us2.oraclecloud.com/',
   cuURL: 'https://login-espx-dev7.fa.ocs.oraclecloud.com/',
-  baseURL: 'https://fa-epvg-test-saasfaprod1.fa.ocs.oraclecloud.com:443/fscmUI/faces/FuseWelcome  ',
+  baseURL:'https://fa-eqij-dev5-saasfademo1.ds-fa.oraclepdemos.com/hcmUI/faces/FuseWelcome',
+  //baseURL: 'https://fa-epvg-test-saasfaprod1.fa.ocs.oraclecloud.com:443/fscmUI/faces/FuseWelcome  ',
   //baseURL: 'https://emhr-dev2.login.us6.oraclecloud.com/',
    // Replace with actual Oracle app URL
 };

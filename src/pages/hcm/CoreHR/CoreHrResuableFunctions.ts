@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import { DatasetRow } from "../../../../utils/excelDataValidator";
-import { CommonFunctions } from "../../common/CommonFunctions";
+//import { CommonFunctions } from "../../common/CommonFunctions";
 
       const Test="Test";
       const FirstNum = Math.floor(Math.random() * 100);
@@ -10,9 +10,16 @@ import { CommonFunctions } from "../../common/CommonFunctions";
       const Employee=Last_Name+", "+First_Name;
       console.log("Employee Name is: " + Employee);
       const EmployeeName="Test_30, Test_90";
-      
+
+ export let NonWorkerFirstName = "";
+ export let NonWorkerLastName = "";
+ export let NonWorkerName = "";
+ export let NonWorkerStartDate = "";
+ export let NonWorkerPersonNumber = "";
+
 export class CoreHrResuableFunctions {
   constructor(private page: Page) {}
+
  
   async hireEmployee_whatInfoDoYouWantToManage(record: DatasetRow) {
 
@@ -467,7 +474,8 @@ async handlePotentialMatchesPopup(): Promise<void> {
   async Rehire_CreateWorkRelationship(record:DatasetRow)
   {
       await this.page.locator("(//label[text()='Action']/following::a)[1]").click();
-      await this.page.locator("//li[text()='"+record.Action+"']").click(record.Action);
+      //await this.page.locator("//li[text()='"+record.Action+"']").click(record.Action);
+      await this.page.locator("//li[text()='"+record.Action+"']").click();
       await this.page.waitForTimeout(2000);
       await this.page.locator("(//label[text()='Action Reason']/following::a)[1]").click();
       await this.page.locator("//li[text()='"+record.ActionReason+"']").click();
@@ -488,4 +496,436 @@ async handlePotentialMatchesPopup(): Promise<void> {
     await this.page.getByLabel("ZIP Code").press('Enter');
     await this.page.waitForTimeout(5000);
   }
+
+
+async selectRedwoodLovByLabel(label: string, value: string) {
+  const fieldLabel = this.page.getByText(label, { exact: true }).first();
+
+  await fieldLabel.waitFor({
+    state: "visible",
+    timeout: 60000,
+  });
+
+  await fieldLabel.scrollIntoViewIfNeeded();
+
+  await fieldLabel.click({
+    force: true,
+  });
+
+  await this.page.waitForTimeout(1000);
+
+  //await this.page.keyboard.type(value);
+await this.page.keyboard.insertText(value);
+  await this.page.waitForTimeout(3000);
+
+  await this.page.keyboard.press("ArrowDown");
+
+  await this.page.keyboard.press("Enter");
+
+  await this.page.waitForTimeout(1500);
+}
+
+async navigateToAddNonWorker() {
+  await this.page.waitForLoadState("domcontentloaded");
+
+  await this.clickOracleText("My Client Groups");
+
+  await this.page.waitForTimeout(3000);
+
+  const showMore = this.page
+    .locator(
+      "//*[normalize-space()='Show More' or @title='Show More' or @aria-label='Show More']"
+    )
+    .first();
+
+  if (await showMore.isVisible({ timeout: 10000 }).catch(() => false)) {
+    await showMore.scrollIntoViewIfNeeded();
+    await showMore.click();
+  }
+
+  await this.page.waitForTimeout(2000);
+
+  await this.page
+    .locator(
+      "//*[normalize-space()='Add a Nonworker' or normalize-space()='Add a Non-Worker' or .//*[normalize-space()='Add a Nonworker'] or .//*[normalize-space()='Add a Non-Worker']]"
+    )
+    .first()
+    .click({ timeout: 120000 });
+
+  await this.page.waitForLoadState("domcontentloaded");
+}
+
+
+async addNonWorker_WhenAndWhy(record: DatasetRow) {
+
+  await this.page.waitForLoadState("domcontentloaded");
+
+  const legalEmployer =
+    (record as any).legalEmployer ||
+    (record as any).LegalEmployer;
+
+  const way2Add =
+    (record as any).way2Add ||
+    (record as any).Way2Add;
+
+  const why2Add =
+    (record as any).why2Add ||
+    (record as any).Why2Add;
+
+  const businessUnit =
+    (record as any).BU ||
+    (record as any).BusinessUnit;
+
+  const nonworkerType =
+    (record as any).nonworkerType ||
+    (record as any).NonworkerType;
+
+  // Info to Include -> Continue
+  await this.clickOracleText("Continue");
+
+  // Wait for When and Why page
+  await this.page
+  .getByRole("heading")
+  .filter({ hasText: "When and why" })
+  .first()
+  .waitFor({
+    state: "visible",
+    timeout: 120000,
+  });
+
+  // Start Date
+  NonWorkerStartDate =
+    this.generateRandomDateBetweenYears(2025, 2026);
+
+  const startDateField =
+    this.page.getByLabel(
+      "When is the nonworker start date?"
+    );
+
+  await startDateField.waitFor({
+    state: "visible",
+    timeout: 60000,
+  });
+
+  await startDateField.fill(NonWorkerStartDate);
+
+  await this.page.keyboard.press("Tab");
+
+  await this.page.waitForTimeout(1000);
+
+  // Legal Employer
+  if (legalEmployer) {
+    await this.page
+  .locator('//*[contains(text(),"Legal Employer")]')
+  .click();
+
+await this.page.waitForTimeout(1000);
+
+await this.page.keyboard.insertText(legalEmployer);
+
+await this.page.waitForTimeout(3000);
+
+await this.page.keyboard.press("ArrowDown");
+
+await this.page.keyboard.press("Enter");
+  }
+
+  console.log(
+  await this.page.evaluate(
+    () => document.activeElement?.id
+  )
+);
+
+  // Way To Add
+  if (way2Add) {
+    await this.selectRedwoodLovByLabel(
+      "What's the way to add a nonworker?",
+      way2Add
+    );
+  }
+
+  // Why To Add
+  if (why2Add) {
+    await this.selectRedwoodLovByLabel(
+      "Why are you adding a nonworker?",
+      why2Add
+    );
+  }
+
+  // Business Unit
+  if (businessUnit) {
+    await this.selectRedwoodLovByLabel(
+      "Business Unit",
+      businessUnit
+    );
+  }
+
+  // Nonworker Type
+  if (nonworkerType) {
+    await this.selectRedwoodLovByLabel(
+      "Nonworker Type",
+      nonworkerType
+    );
+  }
+
+  // Continue
+await this.clickOracleText("Continue");
+
+await this.page.waitForLoadState("networkidle");
+await this.page.waitForTimeout(5000);
+}
+
+
+
+async addNonWorker_PersonalDetails(record: DatasetRow) {
+
+  const random = Date.now();
+
+  NonWorkerFirstName =
+    `${(record as any).fName}_${random}`;
+
+  NonWorkerLastName =
+    (record as any).lName;
+
+  NonWorkerName =
+    `${NonWorkerLastName}, ${NonWorkerFirstName}`;
+
+  // First Name
+  await this.page
+    .getByLabel("First Name")
+    .fill(NonWorkerFirstName);
+
+  // Last Name
+  await this.page
+    .locator("//label[contains(normalize-space(),'Last Name')]//following::input[1]")
+    .fill(NonWorkerLastName);
+
+  // Gender
+  if ((record as any).gender) {
+
+    await this.page
+      .locator("(//label[text()='Gender']//following::a)[1]")
+      .click();
+
+    await this.page
+      .locator(`//li[text()='${(record as any).gender}']`)
+      .click();
+  }
+
+  // Date Of Birth
+  if ((record as any).dob) {
+
+    let formattedDate = (record as any).dob;
+
+    // Excel numeric date
+    if (!isNaN(Number(formattedDate))) {
+      formattedDate = new Date(
+        (Number(formattedDate) - 25569) * 86400 * 1000
+      ).toLocaleDateString("en-US");
+    }
+
+    await this.page
+      .getByLabel("Date of Birth")
+      .fill(formattedDate.toString());
+  }
+
+  console.log("NonWorker Name : " + NonWorkerName);
+
+  await this.hireEmployee_ToBeVisibleContinue();
+}
+
+
+async addNonWorker_Assignment(record: DatasetRow) {
+
+  if ((record as any).workHour) {
+
+    const workHours =
+      this.page.getByLabel("Working Hours");
+
+    if (await workHours.isVisible().catch(() => false)) {
+      await workHours.fill((record as any).workHour);
+    }
+  }
+
+  if ((record as any).workHourFreq) {
+
+    const workFrequency =
+      this.page.getByLabel("Working Hours Frequency");
+
+    if (await workFrequency.isVisible().catch(() => false)) {
+
+      await workFrequency.fill(
+        (record as any).workHourFreq
+      );
+
+      await workFrequency.press("Enter");
+    }
+  }
+}
+
+async addNonWorker_Submit() {
+
+  const submitButton = this.page
+    .getByRole("toolbar", { name: "Actions" })
+    .getByRole("button", {
+      name: "Submit",
+      exact: true
+    })
+    .first();
+
+  await submitButton.waitFor({
+    state: "visible",
+    timeout: 30000
+  });
+
+  await submitButton.scrollIntoViewIfNeeded();
+
+  await submitButton.click();
+
+  await this.page.waitForLoadState("networkidle");
+
+  const yesButton =
+    this.page.locator("text=Yes");
+
+  if (await yesButton.isVisible().catch(() => false)) {
+    await yesButton.click();
+  }
+
+  console.log("Nonworker submitted successfully");
+}
+
+
+async addNonWorker_SearchInPersonManagement() {
+
+  let found = false;
+
+  for (let i = 1; i <= 10; i++) {
+
+    await this.page
+      .getByLabel("Name")
+      .fill(NonWorkerFirstName);
+
+    await this.page
+      .getByLabel("Effective As-of Date")
+      .fill(NonWorkerStartDate);
+
+    await this.page
+      .getByLabel("Effective As-of Date")
+      .press("Tab");
+
+    await this.page
+      .getByRole("button", {
+        name: "Search",
+        exact: true
+      })
+      .click();
+
+    await this.page.waitForLoadState("networkidle");
+    await this.page.waitForTimeout(3000);
+
+    found = await this.page
+      .locator("//span[@class='x2ey']//a[text()]")
+      .first()
+      .isVisible()
+      .catch(() => false);
+
+    if (found) {
+      break;
+    }
+
+    console.log(
+      `Nonworker not found - Attempt ${i}`
+    );
+
+    await this.page.waitForTimeout(10000);
+  }
+
+  if (!found) {
+    throw new Error(
+      `Nonworker ${NonWorkerFirstName} not found in Person Management`
+    );
+  }
+}
+// async clickOracleText(text: string) {
+//   const locator = this.page
+//     .locator(
+//       `//*[self::button or @role='button' or self::a or self::div or self::span][normalize-space()='${text}' or .//*[normalize-space()='${text}']]`
+//     )
+//     .filter({ hasText: new RegExp(`^${text}$`) })
+//     .first();
+
+//   await locator.waitFor({ state: "visible", timeout: 120000 });
+//   await locator.scrollIntoViewIfNeeded();
+//   await locator.click({ timeout: 120000 });
+// }
+
+async clickOracleText(text: string) {
+
+  try {
+    const button = this.page.getByRole("button", {
+      name: text,
+      exact: true,
+    });
+
+    await button.scrollIntoViewIfNeeded();
+    await button.waitFor({
+      state: "visible",
+      timeout: 10000,
+    });
+
+    await button.click();
+    return;
+
+  } catch (e) {
+    console.log(`Role locator failed for ${text}, trying aria-label`);
+  }
+
+  const fallback = this.page.locator(`[aria-label="${text}"]`);
+
+  await fallback.scrollIntoViewIfNeeded();
+
+  await fallback.waitFor({
+    state: "visible",
+    timeout: 120000,
+  });
+
+  await fallback.click();
+}
+async addNonWorker_ValidatePersonNumber() {
+
+  NonWorkerPersonNumber =
+    await this.page
+      .locator("//span[@class='x2ey']//a[text()]")
+      .first()
+      .innerText();
+
+  expect(NonWorkerPersonNumber)
+    .toMatch(/\d{4,}/);
+
+  console.log(
+    "Created Nonworker Person Number : "
+    + NonWorkerPersonNumber
+  );
+}
+generateRandomDateBetweenYears(
+  startYear: number,
+  endYear: number
+): string {
+
+  const start = new Date(startYear, 0, 1).getTime();
+  const end = new Date(endYear, 11, 31).getTime();
+
+  const randomTime =
+    start + Math.random() * (end - start);
+
+  const date = new Date(randomTime);
+
+  const month =
+    `${date.getMonth() + 1}`.padStart(2, "0");
+
+  const day =
+    `${date.getDate()}`.padStart(2, "0");
+
+  return `${month}/${day}/${date.getFullYear()}`;
+}
 }
